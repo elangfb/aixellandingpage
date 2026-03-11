@@ -1,0 +1,50 @@
+﻿
+> aixel-frontend@0.0.0 build
+> tsc -b && vite build
+
+src/pages/TumbuhKembang.tsx(28,74): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(28,81): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(54,150): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(54,157): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(55,72): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(55,79): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(85,151): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(85,160): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(87,76): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(87,85): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(88,77): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(88,86): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(109,78): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(109,84): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(110,75): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(110,81): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(111,75): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(111,79): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(268,60): error TS1127: Invalid character.
+src/pages/TumbuhKembang.tsx(268,97): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+src/pages/TumbuhKembang.tsx(268,299): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+src/pages/TumbuhKembang.tsx(268,308): error TS17002: Expected corresponding JSX closing tag for 'div'.
+src/pages/TumbuhKembang.tsx(282,79): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(282,83): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(302,78): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(302,84): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(322,79): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(322,86): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(349,81): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(349,90): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(368,76): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(368,80): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(387,79): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(387,86): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(421,93): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(421,103): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(428,59): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(428,63): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(429,59): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(429,63): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(430,59): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(430,64): error TS1005: ',' expected.
+src/pages/TumbuhKembang.tsx(508,7): error TS1005: ')' expected.
+src/pages/TumbuhKembang.tsx(509,5): error TS1128: Declaration or statement expected.
+src/pages/TumbuhKembang.tsx(510,3): error TS1109: Expression expected.
+src/pages/TumbuhKembang.tsx(511,1): error TS1128: Declaration or statement expected.
