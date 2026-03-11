@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>TumbuhAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F2F6FF;--bg2:#E8EEFF;--white:#FFFFFF;
+  --blue:#2E7CF6;--blue2:#1A5FD4;--blue-lt:#EAF1FF;--blue-md:#C5D9FF;--sky:#5BA8FF;
+  --teal:#00B5A3;--teal-lt:#E0FAF7;
+  --gold:#FFB020;--gold-lt:#FFF5E0;
+  --green:#1DC98A;--grn-lt:#E4FAF2;
+  --red:#FF5C6A;--red-lt:#FFF0F1;
+  --orange:#FF7849;--org-lt:#FFF2EC;
+  --purple:#8B6CF7;--purp-lt:#F0ECFF;
+  --text:#1A2B4A;--text2:#5A6E8C;--text3:#A0AEBE;
+  --border:#DDE5F5;
+  --shadow:0 2px 16px rgba(46,124,246,.10);
+  --r:20px;--rsm:12px;
+}
+html,body{background:#DCE5F7;font-family:'Nunito',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased;min-height:100vh;overscroll-behavior:none}
+::-webkit-scrollbar{display:none}
+button,input,textarea{font-family:'Nunito',sans-serif}
+
+/* ── SHELL ── */
+.wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;
+  background:radial-gradient(ellipse 55% 45% at 20% 15%,rgba(46,124,246,.13) 0%,transparent 60%),
+             radial-gradient(ellipse 45% 40% at 80% 85%,rgba(0,181,163,.10) 0%,transparent 60%),#DCE5F7}
+.phone{width:390px;height:844px;background:var(--bg);border-radius:48px;overflow:hidden;display:flex;flex-direction:column;position:relative;
+  box-shadow:0 48px 96px rgba(26,46,80,.22),0 0 0 1.5px rgba(255,255,255,.9),inset 0 1px 0 #fff}
+@media(max-width:430px){.wrap{padding:0}.phone{width:100%;height:100dvh;border-radius:0;box-shadow:none}}
+
+/* ── STATUSBAR ── */
+.sbar{padding:14px 28px 8px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:var(--white)}
+.sbar-t{font-family:'Fredoka',sans-serif;font-size:16px;font-weight:600}
+.sbar-i{display:flex;gap:5px;align-items:center;font-size:12px;color:var(--text2)}
+
+/* ── SCREENS ── */
+.screens{flex:1;overflow:hidden;position:relative}
+.screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .22s,transform .22s}
+.screen.active{opacity:1;transform:none;pointer-events:all}
+
+/* ── BOTTOM NAV (6 tabs) ── */
+.bnav{flex-shrink:0;background:var(--white);border-top:1.5px solid var(--border);padding:7px 0 20px;display:flex;align-items:center;justify-content:space-around;box-shadow:0 -4px 20px rgba(46,124,246,.07)}
+.nb{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:5px 6px;border-radius:14px;min-width:52px;transition:all .2s}
+.nb.on{background:var(--blue-lt)}
+.nb-icon{width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:10px;transition:all .2s}
+.nb.on .nb-icon{background:linear-gradient(135deg,var(--blue),var(--sky));box-shadow:0 4px 12px rgba(46,124,246,.35)}
+.nb-lbl{font-size:8.5px;font-weight:800;color:var(--text3);transition:.2s;letter-spacing:.1px}
+.nb.on .nb-lbl{color:var(--blue2)}
+
+/* ── COMMON ── */
+.card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:16px;box-shadow:var(--shadow)}
+.sec{padding:14px 18px 0}
+.sec-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.sec-title{font-family:'Fredoka',sans-serif;font-size:17px;font-weight:600}
+.sec-link{font-size:12px;font-weight:800;color:var(--blue);background:none;border:none;cursor:pointer}
+.tag{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:99px;font-size:11px;font-weight:800}
+.tag-blue{background:var(--blue-lt);color:var(--blue2)}
+.tag-teal{background:var(--teal-lt);color:var(--teal)}
+.tag-gold{background:var(--gold-lt);color:#B87800}
+.tag-green{background:var(--grn-lt);color:#0E9C6A}
+.tag-purple{background:var(--purp-lt);color:var(--purple)}
+.tag-red{background:var(--red-lt);color:var(--red)}
+.tag-orange{background:var(--org-lt);color:var(--orange)}
+.tag-gray{background:var(--bg2);color:var(--text3);border:1.5px solid var(--border)}
+.xp-wrap{padding:12px 18px 0}
+.xp-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.xp-lbl{font-size:11px;font-weight:800;color:var(--text2)}
+.xp-val{font-size:11px;font-weight:800;color:var(--gold)}
+.xp-track{height:9px;background:var(--bg2);border-radius:99px;border:1.5px solid var(--border);overflow:hidden}
+.xp-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--sky));box-shadow:0 0 6px rgba(46,124,246,.4);transition:width .9s cubic-bezier(.4,0,.2,1)}
+.btn-primary{width:100%;padding:13px;border-radius:var(--rsm);border:none;color:#fff;font-family:'Fredoka',sans-serif;font-size:16px;font-weight:600;cursor:pointer;transition:.2s}
+.btn-primary:active{transform:scale(.97)}
+
+/* ══════════════════════════════
+   HOME
+══════════════════════════════ */
+.home-hero{background:linear-gradient(160deg,#DDEAFF 0%,#EFF5FF 60%,var(--bg) 100%);padding:0 18px 16px;position:relative;overflow:hidden}
+.home-hero::before{content:'';position:absolute;top:-60px;right:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(46,124,246,.15) 0%,transparent 70%);pointer-events:none}
+.hero-cloud{position:absolute;border-radius:50%;background:rgba(255,255,255,.6);animation:float 6s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.hero-top{display:flex;justify-content:space-between;align-items:center;padding:10px 0 14px}
+.hero-hi{font-size:12px;color:var(--text2);font-weight:700}
+.hero-name{font-family:'Fredoka',sans-serif;font-size:22px;color:var(--text)}
+.notif-btn{width:40px;height:40px;border-radius:14px;background:var(--white);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;position:relative;cursor:pointer;box-shadow:var(--shadow)}
+.ndot{position:absolute;top:7px;right:7px;width:9px;height:9px;border-radius:50%;background:var(--red);border:2px solid var(--white)}
+.cc{background:linear-gradient(140deg,var(--blue) 0%,var(--blue2) 60%,#0F3D9E 100%);border-radius:var(--r);padding:18px;border:1.5px solid rgba(255,255,255,.3);box-shadow:0 8px 32px rgba(46,124,246,.35);position:relative;overflow:hidden}
+.cc::before{content:'';position:absolute;top:-50px;right:-50px;width:160px;height:160px;background:radial-gradient(circle,rgba(255,255,255,.12) 0%,transparent 70%)}
+.cc-top{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.cc-photo{width:58px;height:58px;border-radius:50%;border:3px solid rgba(255,255,255,.5);background:linear-gradient(135deg,#74B3FF,#ADE8FF);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.cc-name{font-family:'Fredoka',sans-serif;font-size:20px;color:#fff}
+.cc-age{font-size:12px;color:rgba(255,255,255,.8);margin-top:2px;font-weight:600}
+.cc-lv{margin-left:auto;background:rgba(255,255,255,.2);backdrop-filter:blur(4px);padding:5px 11px;border-radius:99px;font-size:11px;font-weight:800;color:#FFE074;border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;gap:4px}
+.cc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.cc-stat{background:rgba(255,255,255,.15);backdrop-filter:blur(4px);border-radius:12px;padding:9px 6px;text-align:center;border:1px solid rgba(255,255,255,.2)}
+.cc-val{font-family:'Fredoka',sans-serif;font-size:18px;color:#fff}
+.cc-u{font-size:9px;color:rgba(255,255,255,.7)}
+.cc-lbl{font-size:9px;color:rgba(255,255,255,.65);margin-top:2px}
+.badge-row{display:flex;gap:7px;padding:12px 18px 0;overflow-x:auto}
+.bchip{flex-shrink:0;display:flex;align-items:center;gap:5px;background:var(--white);border:1.5px solid var(--border);border-radius:99px;padding:6px 12px;font-size:11px;font-weight:800;color:var(--text2);white-space:nowrap;box-shadow:var(--shadow)}
+.bchip.lit{background:var(--gold-lt);border-color:rgba(255,176,32,.3);color:#B87800}
+.act-card{background:linear-gradient(140deg,var(--purp-lt) 0%,#F5F0FF 100%);border:1.5px solid rgba(139,108,247,.2);border-radius:var(--r);padding:16px;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(139,108,247,.12)}
+.act-card::before{content:'🎈';position:absolute;right:14px;top:10px;font-size:40px;opacity:.18}
+.act-title{font-family:'Fredoka',sans-serif;font-size:18px;color:var(--text);margin:6px 0 5px}
+.act-desc{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:10px}
+.act-meta{display:flex;gap:8px;flex-wrap:wrap}
+.act-mi{font-size:11px;font-weight:700;color:var(--text2);background:rgba(255,255,255,.7);padding:3px 9px;border-radius:99px;border:1px solid var(--border)}
+.ms-mini{background:var(--white);border:1.5px solid var(--border);border-radius:var(--rsm);padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;box-shadow:var(--shadow);transition:.15s}
+.ms-mini:active{transform:scale(.98)}
+.ms-mini.done{border-color:rgba(29,201,138,.35);background:var(--grn-lt)}
+.ms-mini.doing{border-color:rgba(255,176,32,.35);background:var(--gold-lt)}
+.ms-ico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;background:var(--bg2)}
+.ms-mini.done .ms-ico{background:rgba(29,201,138,.15)}
+.ms-mini.doing .ms-ico{background:rgba(255,176,32,.15)}
+.ms-q-t{font-size:13px;font-weight:700;color:var(--text)}
+.ms-q-s{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* Home Nutrisi Snippet */
+.nutri-snip{background:linear-gradient(140deg,var(--teal-lt) 0%,#F0FFFD 100%);border:1.5px solid rgba(0,181,163,.2);border-radius:var(--r);padding:14px;cursor:pointer;box-shadow:0 4px 14px rgba(0,181,163,.1);transition:.15s}
+.nutri-snip:active{transform:scale(.98)}
+.nutri-snip-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.nutri-snip-title{font-family:'Fredoka',sans-serif;font-size:15px;color:var(--text)}
+.nutri-snip-kcal{font-family:'Fredoka',sans-serif;font-size:20px;color:var(--teal)}
+.mini-bar-row{display:flex;flex-direction:column;gap:6px}
+.mini-bar{display:flex;align-items:center;gap:8px}
+.mini-bar-lbl{font-size:10px;font-weight:800;color:var(--text2);width:52px;flex-shrink:0}
+.mini-bar-track{flex:1;height:7px;background:var(--bg2);border-radius:99px;overflow:hidden;border:1px solid var(--border)}
+.mini-bar-fill{height:100%;border-radius:99px}
+.mini-bar-val{font-size:10px;font-weight:800;color:var(--text3);width:36px;text-align:right;flex-shrink:0}
+
+/* ══════════════════════════════
+   GROWTH
+══════════════════════════════ */
+.growth-pg{padding:16px 18px 24px}
+.pg-title{font-family:'Fredoka',sans-serif;font-size:23px;color:var(--text);margin-bottom:2px}
+.pg-sub{font-size:13px;color:var(--text2);margin-bottom:14px;font-weight:600}
+.qs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.qs-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--rsm);padding:12px 8px;text-align:center;box-shadow:var(--shadow)}
+.qs-ico{font-size:20px;margin-bottom:4px}
+.qs-val{font-family:'Fredoka',sans-serif;font-size:18px}
+.qs-lbl{font-size:9px;color:var(--text3);margin-top:2px;font-weight:700}
+.ctabs{display:flex;gap:6px;margin-bottom:10px}
+.ctab{padding:6px 14px;border-radius:99px;font-size:12px;font-weight:800;cursor:pointer;border:1.5px solid var(--border);background:var(--white);color:var(--text3);transition:.15s;box-shadow:var(--shadow)}
+.ctab.on{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 4px 14px rgba(46,124,246,.3)}
+.chart-svg{width:100%;height:auto;display:block}
+.ai-box{background:var(--blue-lt);border:1.5px solid var(--blue-md);border-radius:var(--rsm);padding:10px 12px;margin-top:10px;font-size:12px;color:var(--blue2);line-height:1.6;font-weight:600}
+.imt-bar{height:9px;border-radius:99px;position:relative;margin:10px 0 5px;background:linear-gradient(90deg,#FF5C6A 0%,#FFB020 35%,#1DC98A 65%,#2E7CF6 100%);box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.imt-ptr{position:absolute;top:-5px;width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid var(--blue);transform:translateX(-50%);box-shadow:0 2px 8px rgba(46,124,246,.4)}
+.imt-lbls{display:flex;justify-content:space-between}
+.imt-lbls span{font-size:9px;font-weight:700;color:var(--text3)}
+
+/* ══════════════════════════════
+   MILESTONE
+══════════════════════════════ */
+.ms-hdr{padding:16px 18px;background:linear-gradient(160deg,#D8E9FF 0%,var(--bg) 100%)}
+.ms-banner{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;gap:14px;margin-bottom:14px;box-shadow:var(--shadow)}
+.ms-mascot{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--sky));display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;box-shadow:0 4px 16px rgba(46,124,246,.3)}
+.ms-lv-t{font-family:'Fredoka',sans-serif;font-size:17px;color:var(--text)}
+.ms-lv-s{font-size:11px;color:var(--text2);margin-top:2px;font-weight:600}
+.ms-stars{display:flex;gap:2px;margin-top:6px}
+.ptabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+.ptab{flex-shrink:0;padding:7px 14px;border-radius:99px;font-size:12px;font-weight:800;cursor:pointer;border:1.5px solid var(--border);background:var(--white);color:var(--text2);transition:.2s;box-shadow:var(--shadow)}
+.ptab.on{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 4px 14px rgba(46,124,246,.3)}
+.ms-list{padding:12px 18px;display:flex;flex-direction:column;gap:12px}
+.ms-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:.15s;box-shadow:var(--shadow)}
+.ms-card.done{border-color:rgba(29,201,138,.4);background:#FAFFFE}
+.ms-card.doing{border-color:rgba(255,176,32,.4);background:#FFFDF5}
+.ms-card:active{transform:scale(.99)}
+.ms-card-top{padding:14px 16px;display:flex;align-items:flex-start;gap:12px}
+.ms-full-ico{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;background:var(--bg2)}
+.ms-card.done .ms-full-ico{background:rgba(29,201,138,.15)}
+.ms-card.doing .ms-full-ico{background:rgba(255,176,32,.12)}
+.ms-card-b{flex:1}
+.ms-card-t{font-size:14px;font-weight:800;color:var(--text)}
+.ms-card-d{font-size:11px;color:var(--text2);margin-top:3px;line-height:1.5;font-weight:600}
+.ms-card-r{display:flex;align-items:center;gap:6px;margin-top:7px}
+.ms-xp{font-size:10px;font-weight:800;color:var(--blue);background:var(--blue-lt);padding:2px 9px;border-radius:99px;border:1px solid var(--blue-md)}
+.ms-prog{padding:0 16px 12px}
+.ms-prog-row{display:flex;justify-content:space-between;margin-bottom:5px}
+.ms-prog-t{font-size:11px;color:var(--text2);font-weight:700}
+.ms-prog-v{font-size:11px;font-weight:800;color:var(--blue)}
+.ms-pbar{height:7px;background:var(--bg2);border-radius:99px;overflow:hidden;border:1px solid var(--border)}
+.ms-pfill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--sky));box-shadow:0 0 4px rgba(46,124,246,.3)}
+.ms-gallery{padding:0 16px 12px}
+.gal-lbl{font-size:11px;font-weight:800;color:var(--text2);margin-bottom:8px}
+.gal-row{display:flex;gap:7px;overflow-x:auto}
+.gal-ph{flex-shrink:0;width:64px;height:64px;border-radius:12px;border:2px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:26px;cursor:pointer;transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.gal-ph:active{transform:scale(.93)}
+.gal-add{flex-shrink:0;width:64px;height:64px;border-radius:12px;border:2px dashed var(--text3);background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;transition:.15s}
+.gal-add:active{border-color:var(--blue);background:var(--blue-lt)}
+.gal-date{font-size:9px;color:var(--text3);text-align:center;margin-top:3px;font-weight:600}
+.ms-action{padding:6px 16px 14px}
+.btn-complete{width:100%;padding:12px;border-radius:var(--rsm);border:none;color:#fff;font-family:'Fredoka',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:.2s}
+.btn-complete:active{transform:scale(.98)}
+.btn-start{width:100%;padding:12px;border-radius:var(--rsm);background:var(--blue-lt);border:1.5px solid var(--blue-md);color:var(--blue2);font-family:'Fredoka',sans-serif;font-size:15px;font-weight:600;cursor:pointer}
+.conf-wrap{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:9}
+.conf{position:absolute;width:8px;height:8px;border-radius:2px;animation:cfall .85s ease forwards;top:-10px}
+@keyframes cfall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(100px) rotate(400deg);opacity:0}}
+
+/* ══════════════════════════════
+   CHAT
+══════════════════════════════ */
+.chat-scr{display:flex;flex-direction:column;height:100%}
+.chat-hdr{padding:12px 18px;background:var(--white);border-bottom:1.5px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0;box-shadow:0 2px 12px rgba(46,124,246,.07)}
+.chat-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--sky));display:flex;align-items:center;justify-content:center;font-size:20px;border:2px solid var(--blue-md);flex-shrink:0}
+.chat-av-name{font-size:14px;font-weight:800;color:var(--text)}
+.chat-av-st{font-size:11px;color:var(--teal);display:flex;align-items:center;gap:4px;font-weight:700}
+.online{width:6px;height:6px;border-radius:50%;background:var(--teal)}
+.chat-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px}
+.msg-wrap{display:flex;flex-direction:column}
+.msg-wrap.bot{align-items:flex-start}
+.msg-wrap.usr{align-items:flex-end}
+.msg-sndr{font-size:10px;font-weight:800;color:var(--text3);margin-bottom:3px;padding:0 4px}
+.msg-bub{max-width:82%;padding:10px 14px;border-radius:18px;font-size:13px;line-height:1.6;white-space:pre-wrap;font-weight:600}
+.msg-wrap.bot .msg-bub{background:var(--white);color:var(--text);border:1.5px solid var(--border);border-radius:4px 18px 18px 18px;box-shadow:var(--shadow)}
+.msg-wrap.usr .msg-bub{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;border-radius:18px 18px 4px 18px}
+.msg-time{font-size:9px;color:var(--text3);margin-top:3px;padding:0 4px;font-weight:700}
+.chat-qk{padding:8px 14px;display:flex;gap:6px;overflow-x:auto;border-top:1.5px solid var(--border);flex-shrink:0}
+.qchip{flex-shrink:0;padding:6px 12px;border-radius:99px;font-size:11px;font-weight:800;background:var(--blue-lt);border:1.5px solid var(--blue-md);color:var(--blue2);cursor:pointer;white-space:nowrap}
+.qchip:active{background:var(--blue);color:#fff}
+.chat-bar{padding:10px 14px 16px;display:flex;gap:8px;align-items:center;background:var(--white);border-top:1.5px solid var(--border);flex-shrink:0}
+.chat-inp{flex:1;padding:11px 16px;border-radius:99px;border:1.5px solid var(--border);background:var(--bg);font-size:13px;color:var(--text);outline:none;transition:.15s;font-weight:600}
+.chat-inp:focus{border-color:var(--blue);background:var(--white)}
+.chat-inp::placeholder{color:var(--text3)}
+.send-btn{width:42px;height:42px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--blue),var(--sky));border:none;color:#fff;font-size:17px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(46,124,246,.35);transition:.15s;cursor:pointer}
+.send-btn:active{transform:scale(.92)}
+
+/* ══════════════════════════════
+   PROFILE
+══════════════════════════════ */
+.prof-hero{padding:20px 18px 28px;background:linear-gradient(160deg,#D0E5FF 0%,#E8F2FF 50%,var(--bg) 100%);text-align:center;position:relative;overflow:hidden}
+.prof-hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:280px;height:280px;background:radial-gradient(circle,rgba(46,124,246,.12) 0%,transparent 70%)}
+.prof-wrap{position:relative;display:inline-block;margin-bottom:12px}
+.prof-ph{width:88px;height:88px;border-radius:50%;border:4px solid var(--white);background:linear-gradient(135deg,#74B3FF,#ADE8FF);display:flex;align-items:center;justify-content:center;font-size:40px;box-shadow:0 8px 28px rgba(46,124,246,.3);cursor:pointer}
+.prof-edit{position:absolute;bottom:0;right:0;width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;border:2.5px solid var(--white);box-shadow:0 2px 8px rgba(46,124,246,.3)}
+.prof-name{font-family:'Fredoka',sans-serif;font-size:25px;color:var(--text)}
+.prof-dob{font-size:13px;color:var(--text2);margin-top:3px;font-weight:600}
+.prof-age-chip{display:inline-flex;align-items:center;gap:6px;background:var(--white);border:1.5px solid var(--blue-md);color:var(--blue2);font-size:12px;font-weight:800;padding:6px 16px;border-radius:99px;margin-top:10px;box-shadow:var(--shadow)}
+.lv-card{background:linear-gradient(140deg,var(--gold-lt) 0%,#FFF9F0 100%);border:1.5px solid rgba(255,176,32,.25);border-radius:var(--r);padding:16px;box-shadow:0 4px 20px rgba(255,176,32,.12)}
+.lv-top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.lv-name{font-family:'Fredoka',sans-serif;font-size:18px;color:#9A6900}
+.lv-next{font-size:11px;color:var(--text2);margin-top:2px;font-weight:600}
+.lv-bar{height:10px;background:rgba(255,176,32,.15);border-radius:99px;overflow:hidden;border:1px solid rgba(255,176,32,.2)}
+.lv-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),#FFCA3A);box-shadow:0 0 8px rgba(255,176,32,.4)}
+.stats2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sc{background:var(--white);border:1.5px solid var(--border);border-radius:var(--rsm);padding:14px 12px;box-shadow:var(--shadow)}
+.sc-ico{font-size:22px;margin-bottom:8px}
+.sc-val{font-family:'Fredoka',sans-serif;font-size:22px}
+.sc-unit{font-size:10px;color:var(--text2)}
+.sc-lbl{font-size:11px;color:var(--text3);margin-top:3px;font-weight:700}
+.sc-who{font-size:10px;font-weight:800;margin-top:4px}
+.ok{color:var(--green)}.warn{color:var(--gold)}
+.ach-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ach{background:var(--white);border:1.5px solid var(--border);border-radius:var(--rsm);padding:12px 8px;text-align:center;cursor:pointer;transition:.15s;box-shadow:var(--shadow)}
+.ach.lit{border-color:rgba(255,176,32,.4);background:var(--gold-lt)}
+.ach:not(.lit){opacity:.4}
+.ach:active{transform:scale(.94)}
+.ach-e{font-size:27px;margin-bottom:5px}
+.ach-n{font-size:10px;font-weight:800;color:var(--text)}
+.ach-d{font-size:9px;color:var(--text3);margin-top:2px;font-weight:600}
+
+/* ══════════════════════════════
+   NUTRISI SCREEN — Full
+══════════════════════════════ */
+.nutri-pg{padding-bottom:20px}
+
+/* Top header gradient */
+.nutri-hero{background:linear-gradient(160deg,#D6F5F1 0%,#E8FDFB 55%,var(--bg) 100%);padding:16px 18px 14px;position:relative;overflow:hidden}
+.nutri-hero::before{content:'';position:absolute;top:-60px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(0,181,163,.2) 0%,transparent 70%)}
+.nutri-hero-title{font-family:'Fredoka',sans-serif;font-size:22px;color:var(--text)}
+.nutri-hero-sub{font-size:12px;color:var(--text2);font-weight:600;margin-top:2px;margin-bottom:14px}
+
+/* Daily kcal ring card */
+.kcal-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:18px;display:flex;gap:16px;align-items:center;box-shadow:var(--shadow)}
+.kcal-ring-wrap{position:relative;width:84px;height:84px;flex-shrink:0}
+.kcal-ring-wrap svg{transform:rotate(-90deg)}
+.kcal-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.kcal-num{font-family:'Fredoka',sans-serif;font-size:20px;color:var(--teal);line-height:1}
+.kcal-unit{font-size:8px;font-weight:800;color:var(--text3);margin-top:1px}
+.kcal-info{flex:1}
+.kcal-label{font-family:'Fredoka',sans-serif;font-size:15px;color:var(--text);margin-bottom:8px}
+.macro-rows{display:flex;flex-direction:column;gap:6px}
+.macro-row{display:flex;align-items:center;gap:7px}
+.macro-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.macro-name{font-size:11px;font-weight:700;color:var(--text2);width:50px;flex-shrink:0}
+.macro-bar{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.macro-fill{height:100%;border-radius:99px}
+.macro-val{font-size:10px;font-weight:800;color:var(--text3);width:38px;text-align:right;flex-shrink:0}
+
+/* Scan button — hero style */
+.scan-btn-wrap{padding:14px 18px 0}
+.scan-btn{
+  width:100%;padding:15px 20px;border-radius:var(--r);border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--teal) 0%,#00988A 100%);
+  color:#fff;font-family:'Fredoka',sans-serif;font-size:17px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  box-shadow:0 6px 24px rgba(0,181,163,.35);transition:.2s;
+}
+.scan-btn:active{transform:scale(.97)}
+.scan-btn-ico{
+  width:34px;height:34px;border-radius:10px;
+  background:rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+}
+
+/* Meal log */
+.meal-section{padding:14px 18px 0}
+.meal-date-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.meal-date{font-size:12px;font-weight:800;color:var(--text2)}
+.meal-nav{display:flex;gap:6px;align-items:center}
+.meal-nav-btn{width:28px;height:28px;border-radius:8px;border:1.5px solid var(--border);background:var(--white);color:var(--text2);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:800}
+.meal-groups{display:flex;flex-direction:column;gap:10px}
+.meal-group{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
+.meal-group-hdr{padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer}
+.meal-group-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.meal-group-name{font-size:13px;font-weight:800;color:var(--text);flex:1}
+.meal-group-kcal{font-family:'Fredoka',sans-serif;font-size:14px}
+.meal-group-arr{font-size:12px;color:var(--text3)}
+.meal-items{border-top:1.5px solid var(--border)}
+.meal-item{padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--bg2)}
+.meal-item:last-child{border-bottom:none}
+.meal-item-photo{width:44px;height:44px;border-radius:10px;object-fit:cover;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;border:1.5px solid var(--border)}
+.meal-item-info{flex:1}
+.meal-item-name{font-size:13px;font-weight:800;color:var(--text)}
+.meal-item-detail{font-size:11px;color:var(--text3);margin-top:1px;font-weight:600}
+.meal-item-kcal{font-family:'Fredoka',sans-serif;font-size:15px;color:var(--teal)}
+.meal-item-del{width:28px;height:28px;border-radius:8px;border:1.5px solid var(--border);background:var(--white);color:var(--red);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.meal-add-btn{padding:10px 14px;display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12px;font-weight:800;color:var(--blue)}
+
+/* Nutrisi need card */
+.need-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:14px;box-shadow:var(--shadow)}
+.need-title{font-size:13px;font-weight:800;color:var(--text);margin-bottom:10px}
+.need-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.need-item{background:var(--bg);border-radius:var(--rsm);padding:10px 10px}
+.need-label{font-size:10px;font-weight:800;color:var(--text3);margin-bottom:4px}
+.need-bar{height:6px;background:var(--bg2);border-radius:99px;overflow:hidden;margin-bottom:4px;border:1px solid var(--border)}
+.need-fill{height:100%;border-radius:99px}
+.need-vals{display:flex;justify-content:space-between}
+.need-curr{font-size:11px;font-weight:800}
+.need-target{font-size:10px;color:var(--text3);font-weight:600}
+
+/* ══════════════════════════════
+   SCAN MODAL — Full overlay
+══════════════════════════════ */
+.modal-overlay{
+  position:absolute;inset:0;z-index:100;
+  background:rgba(26,43,74,.6);backdrop-filter:blur(6px);
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+  opacity:0;pointer-events:none;transition:opacity .25s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-sheet{
+  width:100%;background:var(--white);border-radius:32px 32px 0 0;
+  max-height:88%;overflow-y:auto;
+  transform:translateY(40px);transition:transform .28s cubic-bezier(.4,0,.2,1);
+}
+.modal-overlay.open .modal-sheet{transform:translateY(0)}
+.modal-drag{width:40px;height:4px;border-radius:2px;background:var(--border);margin:12px auto 0}
+.modal-hdr{padding:14px 18px 10px;display:flex;align-items:center;gap:12px}
+.modal-title{font-family:'Fredoka',sans-serif;font-size:19px;flex:1}
+.modal-close{width:32px;height:32px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px}
+.modal-body{padding:0 18px 24px}
+
+/* Upload zone */
+.upload-zone{
+  border:2.5px dashed var(--teal);border-radius:var(--r);
+  background:var(--teal-lt);padding:28px 20px;
+  text-align:center;cursor:pointer;transition:.2s;position:relative;overflow:hidden;
+}
+.upload-zone:hover,.upload-zone:active{background:#D0F7F4;border-color:#009E8E}
+.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0}
+.upload-ico{font-size:42px;margin-bottom:8px}
+.upload-title{font-family:'Fredoka',sans-serif;font-size:16px;color:var(--teal);margin-bottom:4px}
+.upload-sub{font-size:12px;color:var(--text2);font-weight:600}
+
+/* Preview */
+.preview-wrap{border-radius:var(--r);overflow:hidden;margin-bottom:14px;position:relative;border:1.5px solid var(--border);box-shadow:var(--shadow)}
+.preview-img{width:100%;height:180px;object-fit:cover;display:block}
+.preview-change{position:absolute;top:10px;right:10px;background:rgba(255,255,255,.9);border:1.5px solid var(--border);border-radius:8px;padding:5px 10px;font-size:11px;font-weight:800;cursor:pointer;color:var(--text2)}
+
+/* Loading scan */
+.scan-loading{text-align:center;padding:20px 0}
+.scan-spinner{width:52px;height:52px;border:4px solid var(--teal-lt);border-top-color:var(--teal);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 14px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.scan-loading-title{font-family:'Fredoka',sans-serif;font-size:16px;color:var(--teal);margin-bottom:4px}
+.scan-loading-sub{font-size:12px;color:var(--text2);font-weight:600}
+
+/* Result card */
+.result-card{background:var(--teal-lt);border:1.5px solid rgba(0,181,163,.3);border-radius:var(--r);padding:16px;margin-bottom:14px}
+.result-food-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.result-food-img{width:60px;height:60px;border-radius:14px;object-fit:cover;border:2px solid rgba(0,181,163,.2);display:flex;align-items:center;justify-content:center;font-size:30px;background:rgba(0,181,163,.1);flex-shrink:0}
+.result-food-name{font-family:'Fredoka',sans-serif;font-size:18px;color:var(--text)}
+.result-portion{font-size:12px;color:var(--text2);font-weight:600;margin-top:2px}
+.result-kcal-big{font-family:'Fredoka',sans-serif;font-size:32px;color:var(--teal);margin-left:auto}
+.result-kcal-unit{font-size:11px;color:var(--text3);font-weight:700}
+.result-macros{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.result-macro{background:var(--white);border-radius:var(--rsm);padding:10px 6px;text-align:center;border:1.5px solid var(--border)}
+.result-macro-val{font-family:'Fredoka',sans-serif;font-size:17px}
+.result-macro-unit{font-size:9px;color:var(--text3)}
+.result-macro-lbl{font-size:10px;color:var(--text2);margin-top:2px;font-weight:700}
+.result-vita{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.vita-chip{display:flex;align-items:center;gap:4px;padding:5px 10px;border-radius:99px;font-size:11px;font-weight:800;background:var(--white);border:1.5px solid var(--border);color:var(--text2)}
+
+/* AI notes */
+.ai-notes{background:var(--white);border:1.5px solid var(--blue-md);border-radius:var(--rsm);padding:12px;margin-bottom:14px}
+.ai-notes-hdr{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.ai-notes-title{font-size:13px;font-weight:800;color:var(--blue2)}
+.ai-note-item{display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;font-size:12px;font-weight:600;color:var(--text2);line-height:1.5}
+.ai-note-item:last-child{margin-bottom:0}
+.note-ico{flex-shrink:0;font-size:14px}
+
+/* Portion adjuster */
+.portion-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.portion-lbl{font-size:13px;font-weight:800;color:var(--text);flex:1}
+.portion-ctrl{display:flex;align-items:center;gap:8px}
+.portion-btn{width:32px;height:32px;border-radius:10px;border:1.5px solid var(--border);background:var(--white);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700}
+.portion-val{font-family:'Fredoka',sans-serif;font-size:18px;color:var(--teal);min-width:36px;text-align:center}
+
+/* Meal time selector */
+.mealtime-row{display:flex;gap:8px;margin-bottom:16px}
+.mt-btn{flex:1;padding:9px 4px;border-radius:var(--rsm);border:1.5px solid var(--border);background:var(--white);font-size:12px;font-weight:800;color:var(--text2);cursor:pointer;text-align:center;transition:.15s}
+.mt-btn.on{background:var(--teal);border-color:var(--teal);color:#fff;box-shadow:0 4px 14px rgba(0,181,163,.3)}
+
+/* ══════════════════════════════
+   TOAST
+══════════════════════════════ */
+.toast{position:absolute;bottom:90px;left:50%;transform:translateX(-50%) translateY(16px);background:linear-gradient(135deg,var(--green),#14B07A);color:#fff;padding:10px 22px;border-radius:99px;font-size:13px;font-weight:800;box-shadow:0 8px 28px rgba(29,201,138,.35);opacity:0;transition:all .28s;pointer-events:none;white-space:nowrap;z-index:200}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="phone">
+
+  <div class="sbar">
+    <span class="sbar-t">9:41</span>
+    <div class="sbar-i"><span style="letter-spacing:1px;font-size:11px">●●●</span><span style="margin-left:3px;font-size:11px">WiFi</span><span style="margin-left:3px">🔋</span></div>
+  </div>
+
+  <div class="screens">
+
+    <!-- ══ HOME ══ -->
+    <div class="screen active" id="s-home">
+      <div class="home-hero">
+        <div class="hero-cloud" style="width:60px;height:24px;top:18px;right:60px;animation-delay:.5s;opacity:.7"></div>
+        <div class="hero-cloud" style="width:40px;height:16px;top:36px;right:40px;animation-delay:1.2s;opacity:.5"></div>
+        <div class="hero-top">
+          <div><div class="hero-hi">Senin, 23 Februari 2026</div><div class="hero-name">Halo, Bunda! 👋</div></div>
+          <div class="notif-btn">🔔<div class="ndot"></div></div>
+        </div>
+        <div class="cc">
+          <div class="cc-top">
+            <div class="cc-photo" onclick="goTab('profile')">👦</div>
+            <div><div class="cc-name">Rafi Arjuna</div><div class="cc-age">⏳ 15 bulan 2 minggu</div></div>
+            <div class="cc-lv">⭐ Lv.5</div>
+          </div>
+          <div class="cc-stats">
+            <div class="cc-stat"><div class="cc-val">9.9<span class="cc-u">kg</span></div><div class="cc-lbl">Berat</div></div>
+            <div class="cc-stat"><div class="cc-val">76.9<span class="cc-u">cm</span></div><div class="cc-lbl">Tinggi</div></div>
+            <div class="cc-stat"><div class="cc-val">4/6</div><div class="cc-lbl">Milestone</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="xp-wrap">
+        <div class="xp-row"><span class="xp-lbl">💙 XP — Level 5 · Bintang Muda ⭐</span><span class="xp-val">720 / 1000</span></div>
+        <div class="xp-track"><div class="xp-fill" id="xp-fill" style="width:72%"></div></div>
+      </div>
+
+      <div class="badge-row">
+        <div class="bchip lit">🔥 7-Day Streak</div>
+        <div class="bchip lit">🏆 Milestone Hunter</div>
+        <div class="bchip lit">📸 Memory Maker</div>
+        <div class="bchip">🥗 Nutrisi Pro</div>
+      </div>
+
+      <!-- Nutrisi Snippet on Home -->
+      <div class="sec">
+        <div class="sec-hdr"><div class="sec-title">🥗 Nutrisi Hari Ini</div><button class="sec-link" onclick="goTab('nutrisi')">Detail →</button></div>
+        <div class="nutri-snip" onclick="goTab('nutrisi')">
+          <div class="nutri-snip-hdr">
+            <div>
+              <div style="font-size:11px;font-weight:700;color:var(--text2)">Total Kalori</div>
+              <div class="nutri-snip-kcal">680 <span style="font-size:12px;color:var(--text2);font-weight:600">/ 1.000 kkal</span></div>
+            </div>
+            <span class="tag tag-teal">68% terpenuhi</span>
+          </div>
+          <div class="mini-bar-row">
+            <div class="mini-bar"><span class="mini-bar-lbl">🍖 Protein</span><div class="mini-bar-track"><div class="mini-bar-fill" style="width:72%;background:linear-gradient(90deg,#2E7CF6,#5BA8FF)"></div></div><span class="mini-bar-val">18/25g</span></div>
+            <div class="mini-bar"><span class="mini-bar-lbl">🍚 Karbo</span><div class="mini-bar-track"><div class="mini-bar-fill" style="width:60%;background:linear-gradient(90deg,#FFB020,#FFD166)"></div></div><span class="mini-bar-val">77/130g</span></div>
+            <div class="mini-bar"><span class="mini-bar-lbl">🥑 Lemak</span><div class="mini-bar-track"><div class="mini-bar-fill" style="width:55%;background:linear-gradient(90deg,#00B5A3,#3DD6C8)"></div></div><span class="mini-bar-val">19/35g</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-hdr"><div class="sec-title">🧩 Aktivitas Hari Ini</div></div>
+        <div class="act-card">
+          <div class="tag tag-purple">✦ MOTORIK HALUS · HARI 47</div>
+          <div class="act-title">Bermain Balok Susun Warna-warni</div>
+          <div class="act-desc">Letakkan 5 balok di depan Rafi. Tunjukkan cara menumpuk 2–3 balok, lalu biarkan mencoba sendiri. Melatih koordinasi tangan-mata dan kesabaran.</div>
+          <div class="act-meta">
+            <span class="act-mi">⏱ 10-15 mnt</span><span class="act-mi">🏠 Di rumah</span><span class="act-mi">⚡ +50 XP</span>
+          </div>
+          <button class="btn-primary" style="background:linear-gradient(135deg,var(--purple),#6940E0);box-shadow:0 5px 18px rgba(139,108,247,.35);margin-top:12px" onclick="doActivity()">✓ Tandai Selesai → +50 XP</button>
+        </div>
+      </div>
+
+      <div class="sec" style="padding-bottom:20px">
+        <div class="sec-hdr"><div class="sec-title">🎯 Milestone Terkini</div><button class="sec-link" onclick="goTab('milestone')">Lihat Semua →</button></div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div class="ms-mini done" onclick="goTab('milestone')"><div class="ms-ico">🗣️</div><div style="flex:1"><div class="ms-q-t">Ucapkan 3+ kata bermakna</div><div class="ms-q-s">✓ Selesai 20 Jan · +150 XP</div></div><span class="tag tag-green">✓ Done</span></div>
+          <div class="ms-mini doing" onclick="goTab('milestone')"><div class="ms-ico">🧱</div><div style="flex:1"><div class="ms-q-t">Tumpuk 3 balok sendiri</div><div class="ms-q-s">60% tercapai — terus stimulasi!</div></div><span class="tag tag-gold">⏳ 60%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ GROWTH ══ -->
+    <div class="screen" id="s-growth">
+      <div class="growth-pg">
+        <div class="pg-title">📈 Pertumbuhan Rafi</div>
+        <div class="pg-sub">Dibandingkan standar WHO 2006</div>
+        <div class="qs">
+          <div class="qs-card"><div class="qs-ico">⚖️</div><div class="qs-val" style="color:var(--blue)">9.9<span style="font-size:9px;color:var(--text3)">kg</span></div><div class="qs-lbl">Berat</div></div>
+          <div class="qs-card"><div class="qs-ico">📏</div><div class="qs-val" style="color:var(--teal)">76.9<span style="font-size:9px;color:var(--text3)">cm</span></div><div class="qs-lbl">Tinggi</div></div>
+          <div class="qs-card"><div class="qs-ico">🔵</div><div class="qs-val" style="color:var(--purple)">47.2<span style="font-size:9px;color:var(--text3)">cm</span></div><div class="qs-lbl">L.Kepala</div></div>
+        </div>
+        <div class="card" style="margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <div style="font-size:14px;font-weight:800" id="c-name">Berat Badan</div>
+            <div style="font-family:'Fredoka',sans-serif;font-size:20px;color:var(--blue)" id="c-curr">9.9 kg</div>
+          </div>
+          <div class="ctabs">
+            <button class="ctab on" onclick="swChart('weight',this)">Berat</button>
+            <button class="ctab" onclick="swChart('height',this)">Tinggi</button>
+            <button class="ctab" onclick="swChart('head',this)">L.Kepala</button>
+          </div>
+          <div id="c-area"></div>
+          <div class="ai-box" id="c-insight"></div>
+        </div>
+        <div class="card" style="margin-bottom:14px">
+          <div style="font-size:14px;font-weight:800;margin-bottom:12px">🧮 Indeks Massa Tubuh</div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+            <div><div style="font-family:'Fredoka',sans-serif;font-size:28px;color:var(--blue)">16.8<span style="font-size:12px;color:var(--text2)"> kg/m²</span></div><div style="font-size:11px;color:var(--text2);font-weight:600">Normal untuk usia 15 bulan</div></div>
+            <span class="tag tag-green" style="margin-left:auto">✓ Gizi Baik</span>
+          </div>
+          <div class="imt-bar"><div class="imt-ptr" style="left:52%"></div></div>
+          <div class="imt-lbls"><span>Kurus</span><span style="color:var(--green);font-weight:800">Normal ✓</span><span>Lebih</span><span>Obesitas</span></div>
+        </div>
+        <div class="card"><div style="display:flex;align-items:center;gap:12px"><span style="font-size:28px">📅</span><div style="flex:1"><div style="font-size:13px;font-weight:800">Pengukuran Berikutnya</div><div style="font-size:12px;color:var(--blue);margin-top:2px;font-weight:700">3 Maret 2026 — Posyandu Melati</div></div><span class="tag tag-blue">8 hari</span></div></div>
+      </div>
+    </div>
+
+    <!-- ══ MILESTONE ══ -->
+    <div class="screen" id="s-milestone">
+      <div class="ms-hdr">
+        <div class="ms-banner">
+          <div class="ms-mascot">🌟</div>
+          <div><div class="ms-lv-t">Rafi si Penjelajah Dunia</div><div class="ms-lv-s">4 dari 6 milestone periode ini tercapai!</div><div class="ms-stars"><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span style="opacity:.3">⭐</span></div></div>
+        </div>
+        <div class="ptabs" id="ptabs"></div>
+      </div>
+      <div class="ms-list" id="ms-list"></div>
+    </div>
+
+    <!-- ══ NUTRISI SCREEN ══ -->
+    <div class="screen" id="s-nutrisi">
+      <div class="nutri-pg">
+        <div class="nutri-hero">
+          <div class="nutri-hero-title">🥗 Tracker Nutrisi Rafi</div>
+          <div class="nutri-hero-sub">Senin, 23 Februari 2026 • Usia 15 bulan</div>
+
+          <!-- Kalori ring + macros -->
+          <div class="kcal-card">
+            <div class="kcal-ring-wrap">
+              <svg width="84" height="84" viewBox="0 0 84 84">
+                <circle cx="42" cy="42" r="36" fill="none" stroke="#E0FAF7" stroke-width="8"/>
+                <circle cx="42" cy="42" r="36" fill="none" stroke="url(#tealGrad)" stroke-width="8"
+                  stroke-dasharray="226" stroke-dashoffset="72" stroke-linecap="round"/>
+                <defs>
+                  <linearGradient id="tealGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#00B5A3"/>
+                    <stop offset="100%" stop-color="#3DD6C8"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div class="kcal-center"><div class="kcal-num" id="kcal-disp">680</div><div class="kcal-unit">/ 1000 kkal</div></div>
+            </div>
+            <div class="kcal-info">
+              <div class="kcal-label">Total Asupan Hari Ini</div>
+              <div class="macro-rows">
+                <div class="macro-row"><div class="macro-dot" style="background:#2E7CF6"></div><span class="macro-name">Protein</span><div class="macro-bar"><div class="macro-fill" id="mb-protein" style="width:72%;background:linear-gradient(90deg,#2E7CF6,#5BA8FF)"></div></div><span class="macro-val" id="mv-protein">18/25g</span></div>
+                <div class="macro-row"><div class="macro-dot" style="background:#FFB020"></div><span class="macro-name">Karbohidrat</span><div class="macro-bar"><div class="macro-fill" id="mb-karbo" style="width:59%;background:linear-gradient(90deg,#FFB020,#FFD166)"></div></div><span class="macro-val" id="mv-karbo">77/130g</span></div>
+                <div class="macro-row"><div class="macro-dot" style="background:#00B5A3"></div><span class="macro-name">Lemak</span><div class="macro-bar"><div class="macro-fill" id="mb-lemak" style="width:54%;background:linear-gradient(90deg,#00B5A3,#3DD6C8)"></div></div><span class="macro-val" id="mv-lemak">19/35g</span></div>
+                <div class="macro-row"><div class="macro-dot" style="background:#8B6CF7"></div><span class="macro-name">Serat</span><div class="macro-bar"><div class="macro-fill" id="mb-serat" style="width:60%;background:linear-gradient(90deg,#8B6CF7,#B09AFF)"></div></div><span class="macro-val" id="mv-serat">9.6/16g</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scan Button -->
+        <div class="scan-btn-wrap">
+          <button class="scan-btn" onclick="openScanModal()">
+            <div class="scan-btn-ico">
+              <!-- Custom camera-leaf SVG icon -->
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                <rect x="1" y="5" width="20" height="14" rx="3.5" fill="rgba(255,255,255,.25)" stroke="white" stroke-width="1.5"/>
+                <circle cx="11" cy="12" r="4" fill="none" stroke="white" stroke-width="1.8"/>
+                <circle cx="11" cy="12" r="1.5" fill="white"/>
+                <path d="M7 5 Q8 2 11 3 Q14 2 15 5" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                <circle cx="17.5" cy="8" r="1.2" fill="white" opacity=".8"/>
+                <!-- leaf accent -->
+                <path d="M2.5 9 Q4 7 5.5 9" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span>📷 Scan Makanan dengan AI</span>
+          </button>
+        </div>
+
+        <!-- Meal Log -->
+        <div class="meal-section">
+          <div class="meal-date-row">
+            <div class="meal-date">📋 Log Makanan Hari Ini</div>
+            <div class="meal-nav">
+              <button class="meal-nav-btn">‹</button>
+              <span style="font-size:11px;font-weight:800;color:var(--text2)">Hari Ini</span>
+              <button class="meal-nav-btn" style="opacity:.4">›</button>
+            </div>
+          </div>
+          <div class="meal-groups" id="meal-groups"></div>
+        </div>
+
+        <!-- Kebutuhan Nutrisi -->
+        <div class="sec" style="padding-bottom:20px">
+          <div class="sec-hdr"><div class="sec-title">📊 Kebutuhan Harian Rafi</div></div>
+          <div class="need-card">
+            <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:8px">Berdasarkan AKG 2019 — Anak 1–3 tahun</div>
+            <div class="need-grid" id="need-grid"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ CHAT ══ -->
+    <div class="screen" id="s-chat">
+      <div class="chat-scr">
+        <div class="chat-hdr">
+          <div class="chat-av">🤖</div>
+          <div style="flex:1"><div class="chat-av-name">AI Asisten dr. Piprim</div><div class="chat-av-st"><span class="online"></span>Berbasis panduan IDAI & WHO</div></div>
+          <span style="font-size:11px;font-weight:800;color:var(--text3)">SpA(K)</span>
+        </div>
+        <div class="chat-msgs" id="chat-msgs"></div>
+        <div class="chat-qk" id="chat-qk"></div>
+        <div class="chat-bar">
+          <input class="chat-inp" id="chat-inp" placeholder="Tanya seputar tumbuh kembang Rafi...">
+          <button class="send-btn" onclick="sendMsg()">➤</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PROFILE ══ -->
+    <div class="screen" id="s-profile">
+      <div>
+        <div class="prof-hero">
+          <div class="prof-wrap"><div class="prof-ph">👦</div><div class="prof-edit">✏️</div></div>
+          <div class="prof-name">Rafi Arjuna</div>
+          <div class="prof-dob">🎂 Lahir 10 November 2024</div>
+          <div class="prof-age-chip">⏳ 15 bulan 2 minggu</div>
+        </div>
+        <div class="sec">
+          <div class="lv-card">
+            <div class="lv-top"><div style="font-size:36px">🏆</div><div><div class="lv-name">Level 5 — Bintang Muda ⭐</div><div class="lv-next">280 XP lagi ke Level 6 🚀</div></div></div>
+            <div class="xp-row"><span class="xp-lbl">Total XP</span><span class="xp-val">720 / 1000</span></div>
+            <div class="lv-bar"><div class="lv-fill" style="width:72%"></div></div>
+          </div>
+        </div>
+        <div class="sec" style="padding-top:14px">
+          <div class="stats2">
+            <div class="sc"><div class="sc-ico">⚖️</div><span class="sc-val">9.9</span><span class="sc-unit"> kg</span><div class="sc-lbl">Berat Badan</div><div class="sc-who ok">✓ WHO P50</div></div>
+            <div class="sc"><div class="sc-ico">📏</div><span class="sc-val">76.9</span><span class="sc-unit"> cm</span><div class="sc-lbl">Tinggi Badan</div><div class="sc-who ok">✓ WHO P48</div></div>
+            <div class="sc"><div class="sc-ico">🔵</div><span class="sc-val">47.2</span><span class="sc-unit"> cm</span><div class="sc-lbl">Lingkar Kepala</div><div class="sc-who ok">✓ WHO P65</div></div>
+            <div class="sc"><div class="sc-ico">🧮</div><span class="sc-val">16.8</span><span class="sc-unit"> IMT</span><div class="sc-lbl">Status Gizi</div><div class="sc-who warn">⚠ Pantau zat besi</div></div>
+          </div>
+        </div>
+        <div class="sec">
+          <div class="sec-hdr"><div class="sec-title">🏅 Pencapaian</div><button class="sec-link">Semua →</button></div>
+          <div class="ach-grid" id="ach-grid"></div>
+        </div>
+        <div class="sec" style="padding-bottom:24px">
+          <div class="card" style="display:flex;align-items:center;gap:12px">
+            <span style="font-size:28px">👨‍⚕️</span>
+            <div style="flex:1"><div style="font-size:13px;font-weight:800">Dokter Spesialis Anak</div><div style="font-size:12px;color:var(--blue);margin-top:2px;font-weight:700">dr. Piprim Basarah, SpA(K) · IDAI</div></div>
+            <button onclick="showToast('📅 Jadwal konsultasi ditambahkan!')" style="background:var(--blue-lt);border:1.5px solid var(--blue-md);border-radius:10px;padding:7px 13px;font-size:12px;font-weight:800;color:var(--blue2);cursor:pointer">Jadwal</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /screens -->
+
+  <!-- ══════════════════════════════
+       BOTTOM NAV — 6 tabs with custom SVG icons
+  ══════════════════════════════ -->
+  <nav class="bnav">
+
+    <!-- HOME: Baby house with peek + chimney -->
+    <button class="nb on" id="nb-home" onclick="goTab('home')">
+      <div class="nb-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="color:inherit">
+          <rect x="17" y="4.5" width="3" height="5" rx="1" fill="currentColor" opacity=".5"/>
+          <circle cx="17.5" cy="3.5" r="1" fill="currentColor" opacity=".35"/>
+          <circle cx="19.2" cy="3" r=".8" fill="currentColor" opacity=".25"/>
+          <path d="M2 13L12 3L22 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="5" y="12" width="14" height="10" rx="2" fill="currentColor" opacity=".12" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="10.5" y="16.5" width="3" height="5.5" rx="1.2" fill="currentColor" opacity=".6"/>
+          <circle cx="7.8" cy="15.5" r="2.2" fill="white" stroke="currentColor" stroke-width="1.2"/>
+          <circle cx="7.2" cy="15.1" r=".38" fill="currentColor"/>
+          <circle cx="8.4" cy="15.1" r=".38" fill="currentColor"/>
+          <path d="M7.3 16.4 Q7.8 16.9 8.3 16.4" stroke="currentColor" stroke-width=".6" stroke-linecap="round" fill="none"/>
+          <path d="M11.5 18.8 Q12 18.2 12.5 18.8 Q13 18.2 13.5 18.8 Q13.7 19.3 12 20.1 Q10.3 19.3 11.5 18.8Z" fill="currentColor" opacity=".7"/>
+        </svg>
+      </div>
+      <span class="nb-lbl">Beranda</span>
+    </button>
+
+    <!-- GROWTH: Sprout + ruler -->
+    <button class="nb" id="nb-growth" onclick="goTab('growth')">
+      <div class="nb-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="color:inherit">
+          <rect x="18" y="3" width="4" height="19" rx="1.5" fill="currentColor" opacity=".2" stroke="currentColor" stroke-width="1"/>
+          <line x1="18" y1="7" x2="21" y2="7" stroke="currentColor" stroke-width="1" opacity=".6"/>
+          <line x1="18" y1="11" x2="22" y2="11" stroke="currentColor" stroke-width="1.2" opacity=".8"/>
+          <line x1="18" y1="15" x2="21" y2="15" stroke="currentColor" stroke-width="1" opacity=".6"/>
+          <line x1="18" y1="19" x2="22" y2="19" stroke="currentColor" stroke-width="1.2" opacity=".8"/>
+          <path d="M10 21 Q10 14 10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M10 16 Q5.5 13.5 6 8 Q11 10 10 16Z" fill="currentColor" opacity=".5"/>
+          <path d="M10 12 Q14.5 9 14 4 Q9 7 10 12Z" fill="currentColor" opacity=".7"/>
+          <circle cx="10" cy="9" r="1.4" fill="currentColor"/>
+          <path d="M5 21 Q10 19.5 15 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none" opacity=".4"/>
+          <path d="M14 5 L14.5 3.5 L15 5 L16.5 5 L15.3 6 L15.8 7.5 L14.5 6.6 L13.2 7.5 L13.7 6 L12.5 5Z" fill="currentColor" opacity=".55"/>
+        </svg>
+      </div>
+      <span class="nb-lbl">Tumbuh</span>
+    </button>
+
+    <!-- NUTRISI: Plate with fork + leaf sparkle -->
+    <button class="nb" id="nb-nutrisi" onclick="goTab('nutrisi')">
+      <div class="nb-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="color:inherit">
+          <!-- plate -->
+          <circle cx="12" cy="13" r="8" fill="currentColor" opacity=".1" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="12" cy="13" r="5.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".4"/>
+          <!-- fork left -->
+          <line x1="7" y1="4" x2="7" y2="9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <line x1="5.8" y1="4" x2="5.8" y2="7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <line x1="8.2" y1="4" x2="8.2" y2="7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M5.8 7 Q7 8.5 8.2 7" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+          <line x1="7" y1="8.5" x2="7" y2="13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <!-- knife right -->
+          <path d="M17 4 Q19.5 5.5 17 9 L17 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          <!-- leaf on plate -->
+          <path d="M12 16 Q10.5 13 12 11 Q13.5 13 12 16Z" fill="currentColor" opacity=".7"/>
+          <line x1="12" y1="11" x2="12" y2="16" stroke="currentColor" stroke-width=".7" opacity=".5"/>
+          <!-- sparkles -->
+          <circle cx="19" cy="4" r=".9" fill="currentColor" opacity=".5"/>
+          <circle cx="21" cy="7" r=".7" fill="currentColor" opacity=".4"/>
+          <path d="M20 4.5 L20.5 3 L21 4.5 L22.5 5 L21 5.5 L20.5 7 L20 5.5 L18.5 5Z" fill="currentColor" opacity=".5"/>
+        </svg>
+      </div>
+      <span class="nb-lbl">Nutrisi</span>
+    </button>
+
+    <!-- MILESTONE: Chubby star baby face -->
+    <button class="nb" id="nb-milestone" onclick="goTab('milestone')">
+      <div class="nb-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="color:inherit">
+          <path d="M12 2 L14.2 8.2 L21 8.2 L15.5 12.4 L17.7 18.8 L12 14.7 L6.3 18.8 L8.5 12.4 L3 8.2 L9.8 8.2 Z" fill="currentColor" opacity=".88" stroke="currentColor" stroke-width=".5" stroke-linejoin="round"/>
+          <circle cx="10.3" cy="11" r=".75" fill="white"/>
+          <circle cx="13.7" cy="11" r=".75" fill="white"/>
+          <ellipse cx="9.3" cy="12.2" rx=".9" ry=".55" fill="white" opacity=".45"/>
+          <ellipse cx="14.7" cy="12.2" rx=".9" ry=".55" fill="white" opacity=".45"/>
+          <path d="M10.5 13.3 Q12 14.8 13.5 13.3" stroke="white" stroke-width=".85" stroke-linecap="round" fill="none"/>
+          <path d="M4 8.5 Q2.5 8 2 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".38"/>
+          <path d="M20 8.5 Q21.5 8 22 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".38"/>
+          <circle cx="3" cy="3" r=".9" fill="currentColor" opacity=".35"/>
+          <circle cx="21" cy="3" r=".75" fill="currentColor" opacity=".28"/>
+        </svg>
+      </div>
+      <span class="nb-lbl">Milestone</span>
+    </button>
+
+    <!-- CHAT: Cloud + stethoscope -->
+    <button class="nb" id="nb-chat" onclick="goTab('chat')">
+      <div class="nb-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="color:inherit">
+          <path d="M4 8 Q4 4 8 4 L17 4 Q21 4 21 8 L21 14 Q21 18 17 18 L14 18 L10 22 L10 18 L7 18 Q4 18 4 14 Z" fill="currentColor" opacity=".13" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          <circle cx="7.5" cy="5" r="2.3" fill="currentColor" opacity=".18"/>
+          <circle cx="12" cy="4.3" r="2.6" fill="currentColor" opacity=".18"/>
+          <circle cx="16.5" cy="5" r="2.3" fill="currentColor" opacity=".18"/>
+          <circle cx="9" cy="10.2" r="1.4" fill="none" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M10.4 10.2 Q13 10.2 13 13 Q13 15.5 14.8 15.8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+          <circle cx="15.8" cy="16" r="2" fill="none" stroke="currentColor" stroke-width="1.4"/>
+          <circle cx="15.8" cy="16" r=".75" fill="currentColor" opacity=".6"/>
+          <rect x="16.5" y="6.5" width="4.5" height="4.5" rx="1.4" fill="currentColor" opacity=".7"/>
+          <path d="M18.3 8 L18.3 9.8 M17.4 8.9 L19.2 8.9" stroke="white" stroke-width=".9" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span class="nb-lbl">Tanya AI</span>
+    </button>
+
+    <!-- PROFILE: Baby face + tuft -->
+    <button class="nb" id="nb-profile" onclick="goTab('profile')">
+      <div class="nb-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="color:inherit">
+          <path d="M9.5 5.5 Q9.5 2.5 12.5 3 Q15.5 2.5 15.5 5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none" opacity=".55"/>
+          <path d="M7.5 6 Q6.5 3.5 8.5 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none" opacity=".4"/>
+          <circle cx="12.5" cy="10" r="5.5" fill="currentColor" opacity=".1" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="10.5" cy="9.5" r="1.1" fill="currentColor"/>
+          <circle cx="14.5" cy="9.5" r="1.1" fill="currentColor"/>
+          <circle cx="10.9" cy="9.1" r=".38" fill="white"/>
+          <circle cx="14.9" cy="9.1" r=".38" fill="white"/>
+          <ellipse cx="9.2" cy="11" rx="1.1" ry=".65" fill="currentColor" opacity=".28"/>
+          <ellipse cx="15.8" cy="11" rx="1.1" ry=".65" fill="currentColor" opacity=".28"/>
+          <path d="M10.2 12.2 Q12.5 14 14.8 12.2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" fill="none"/>
+          <path d="M4 23 Q4 17.5 12.5 17.5 Q21 17.5 21 23" fill="currentColor" opacity=".13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M20 7 L20.5 5.5 L21 7 L22.5 7 L21.3 8 L21.8 9.5 L20.5 8.5 L19.2 9.5 L19.7 8 L18.5 7Z" fill="currentColor" opacity=".45"/>
+        </svg>
+      </div>
+      <span class="nb-lbl">Profil</span>
+    </button>
+
+  </nav>
+
+  <!-- ══ SCAN MODAL ══ -->
+  <div class="modal-overlay" id="scan-modal">
+    <div class="modal-sheet">
+      <div class="modal-drag"></div>
+      <div class="modal-hdr">
+        <div class="modal-title">🔍 Scan Makanan Rafi</div>
+        <button class="modal-close" onclick="closeScanModal()">✕</button>
+      </div>
+      <div class="modal-body">
+
+        <!-- State: UPLOAD -->
+        <div id="state-upload">
+          <div class="upload-zone" onclick="document.getElementById('food-input').click()">
+            <input type="file" id="food-input" accept="image/*" capture="environment" onchange="handlePhoto(event)">
+            <div class="upload-ico">📸</div>
+            <div class="upload-title">Foto Makanan Rafi</div>
+            <div class="upload-sub">Tap untuk ambil foto atau pilih dari galeri</div>
+          </div>
+          <div style="margin-top:12px;display:flex;gap:8px">
+            <button onclick="demoScan('nasi')" style="flex:1;padding:10px;border-radius:var(--rsm);border:1.5px solid var(--border);background:var(--bg);font-size:12px;font-weight:800;color:var(--text2);cursor:pointer">🍚 Coba Demo: Nasi</button>
+            <button onclick="demoScan('buah')" style="flex:1;padding:10px;border-radius:var(--rsm);border:1.5px solid var(--border);background:var(--bg);font-size:12px;font-weight:800;color:var(--text2);cursor:pointer">🍓 Coba Demo: Buah</button>
+            <button onclick="demoScan('telur')" style="flex:1;padding:10px;border-radius:var(--rsm);border:1.5px solid var(--border);background:var(--bg);font-size:12px;font-weight:800;color:var(--text2);cursor:pointer">🥚 Coba Demo: Telur</button>
+          </div>
+        </div>
+
+        <!-- State: LOADING -->
+        <div id="state-loading" style="display:none">
+          <div class="preview-wrap" id="preview-loading" style="margin-bottom:16px"></div>
+          <div class="scan-loading">
+            <div class="scan-spinner"></div>
+            <div class="scan-loading-title">AI sedang menganalisis...</div>
+            <div class="scan-loading-sub" id="loading-step">Mengenali jenis makanan</div>
+          </div>
+        </div>
+
+        <!-- State: RESULT -->
+        <div id="state-result" style="display:none">
+          <div class="preview-wrap" id="preview-result">
+            <div id="result-img" style="width:100%;height:160px;display:flex;align-items:center;justify-content:center;font-size:72px;background:var(--teal-lt)"></div>
+            <button class="preview-change" onclick="resetScan()">↺ Ganti</button>
+          </div>
+
+          <!-- Food result -->
+          <div class="result-card">
+            <div class="result-food-row">
+              <div class="result-food-img" id="r-img"></div>
+              <div style="flex:1">
+                <div class="result-food-name" id="r-name">—</div>
+                <div class="result-portion" id="r-portion">—</div>
+                <div style="margin-top:4px" id="r-suitability"></div>
+              </div>
+              <div style="text-align:right">
+                <div class="result-kcal-big" id="r-kcal">—</div>
+                <div class="result-kcal-unit">kkal</div>
+              </div>
+            </div>
+
+            <div class="result-macros" id="r-macros"></div>
+
+            <div style="font-size:12px;font-weight:800;color:var(--text2);margin-bottom:6px">🧪 Vitamin & Mineral</div>
+            <div class="result-vita" id="r-vita"></div>
+          </div>
+
+          <!-- AI Notes -->
+          <div class="ai-notes">
+            <div class="ai-notes-hdr">
+              <span style="font-size:18px">🤖</span>
+              <div class="ai-notes-title">Catatan AI untuk Rafi (15 bulan)</div>
+            </div>
+            <div id="r-notes"></div>
+          </div>
+
+          <!-- Portion adjuster -->
+          <div class="portion-row">
+            <div class="portion-lbl">Porsi yang dimakan:</div>
+            <div class="portion-ctrl">
+              <button class="portion-btn" onclick="adjPortion(-0.25)">−</button>
+              <div class="portion-val" id="portion-disp">1×</div>
+              <button class="portion-btn" onclick="adjPortion(0.25)">+</button>
+            </div>
+          </div>
+
+          <!-- Meal time -->
+          <div style="font-size:12px;font-weight:800;color:var(--text2);margin-bottom:8px">Tambahkan ke waktu makan:</div>
+          <div class="mealtime-row" id="mealtime-row"></div>
+
+          <button class="btn-primary" style="background:linear-gradient(135deg,var(--teal),#009E8E);box-shadow:0 5px 20px rgba(0,181,163,.35)" onclick="addToLog()">
+            ✓ Tambah ke Log Nutrisi
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+</div><!-- /phone -->
+</div><!-- /wrap -->
+
+<script>
+/* ═══════ NAV ═══════ */
+let cur = 'home';
+const TABS = ['home','growth','milestone','nutrisi','chat','profile'];
+
+function goTab(t){
+  document.getElementById('s-'+cur).classList.remove('active');
+  document.getElementById('nb-'+cur).classList.remove('on');
+  setSvgColor(cur, false);
+  cur = t;
+  document.getElementById('s-'+t).classList.add('active');
+  document.getElementById('nb-'+t).classList.add('on');
+  setSvgColor(t, true);
+}
+function setSvgColor(tab, on){
+  const svg = document.querySelector('#nb-'+tab+' svg');
+  if(svg) svg.style.color = on ? 'white' : 'var(--text3)';
+}
+TABS.forEach(t => setSvgColor(t, t==='home'));
+
+/* ═══════ GROWTH CHARTS ═══════ */
+const CHARTS={
+  weight:{name:'Berat Badan',curr:'9.9 kg',color:'#2E7CF6',labels:['0','3','6','9','12','15'],w3:[2.9,5.1,6.4,7.5,8.4,9.0],w97:[4.3,7.6,9.0,10.5,11.3,11.9],actual:[3.2,5.8,7.2,8.6,9.4,9.9],insight:'Berat Rafi di <strong>persentil 50 WHO</strong> — pertumbuhan optimal dan konsisten. Tidak ada tanda underweight maupun overweight.'},
+  height:{name:'Tinggi Badan',curr:'76.9 cm',color:'#00B5A3',labels:['0','3','6','9','12','15'],w3:[46.1,57.3,62.5,66.2,69.2,72.0],w97:[53.7,65.5,72.7,76.6,80.6,83.0],actual:[49.5,60.8,67.0,70.8,74.2,76.9],insight:'Tinggi Rafi di <strong>persentil 48 WHO</strong> — normal. Tren 6 bulan terakhir linear, tidak ada tanda growth faltering.'},
+  head:{name:'Lingkar Kepala',curr:'47.2 cm',color:'#8B6CF7',labels:['0','3','6','9','12','15'],w3:[32.1,37.2,40.5,42.6,44.2,45.6],w97:[36.9,42.8,46.1,48.0,49.4,50.0],actual:[34.2,39.5,43.0,44.8,46.3,47.2],insight:'Lingkar kepala di <strong>persentil 65 WHO</strong> — sedikit di atas median, masih dalam batas normal.'},
+};
+function buildSVG(key){
+  const d=CHARTS[key],W=320,H=145,pl=14,pr=30,pt=8,pb=22;
+  const cW=W-pl-pr,cH=H-pt-pb,n=d.labels.length;
+  const allV=[...d.w3,...d.w97],mn=Math.min(...allV)-1,mx=Math.max(...allV)+1;
+  const xs=i=>pl+(i/(n-1))*cW,ys=v=>pt+cH-((v-mn)/(mx-mn))*cH;
+  const lp=arr=>arr.map((v,i)=>`${i===0?'M':'L'}${xs(i).toFixed(1)},${ys(v).toFixed(1)}`).join(' ');
+  const area=`M ${d.w97.map((v,i)=>`${xs(i)},${ys(v)}`).join(' L')} L ${[...d.w3].reverse().map((v,i)=>`${xs(n-1-i)},${ys(v)}`).join(' L')} Z`;
+  let pts='';const actuals=d.actual.filter(v=>v!==null);
+  d.actual.forEach((v,i)=>{if(v===null)return;const last=i===actuals.length-1;if(last){pts+=`<rect x="${xs(i)-22}" y="${ys(v)-19}" width="44" height="15" rx="5" fill="${d.color}"/><text x="${xs(i)}" y="${ys(v)-9}" text-anchor="middle" font-size="9" fill="white" font-weight="800" font-family="Nunito">${v}</text><circle cx="${xs(i)}" cy="${ys(v)}" r="5" fill="${d.color}" stroke="white" stroke-width="2.5"/><circle cx="${xs(i)}" cy="${ys(v)}" r="8" fill="${d.color}" opacity=".15"/>`}else{pts+=`<circle cx="${xs(i)}" cy="${ys(v)}" r="3.5" fill="none" stroke="${d.color}" stroke-width="2"/>`}});
+  const grid=[1,2,3].map(j=>{const y=pt+(cH/4)*j;return `<line x1="${pl}" y1="${y}" x2="${pl+cW}" y2="${y}" stroke="${d.color}" stroke-width=".7" opacity=".1"/>`;}).join('');
+  const xlbls=d.labels.map((l,i)=>`<text x="${xs(i)}" y="${H-3}" text-anchor="middle" font-size="8" fill="#A0AEBE" font-family="Nunito" font-weight="700">${l}bl</text>`).join('');
+  return `<svg class="chart-svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">${grid}<path d="${area}" fill="${d.color}" opacity=".07"/><path d="${lp(d.w97)}" stroke="${d.color}" stroke-width="1.2" fill="none" stroke-dasharray="3,2" opacity=".4"/><path d="${lp(d.w3)}" stroke="${d.color}" stroke-width="1.2" fill="none" stroke-dasharray="3,2" opacity=".4"/><path d="${lp(d.actual)}" stroke="${d.color}" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>${pts}${xlbls}<text x="${pl+cW+2}" y="${ys(d.w97[n-1])+4}" font-size="8" fill="#A0AEBE" font-family="Nunito" font-weight="700">P97</text><text x="${pl+cW+2}" y="${ys(d.w3[n-1])+4}" font-size="8" fill="#A0AEBE" font-family="Nunito" font-weight="700">P3</text></svg>`;
+}
+function swChart(key,el){document.querySelectorAll('.ctab').forEach(t=>t.classList.remove('on'));el.classList.add('on');const d=CHARTS[key];document.getElementById('c-name').textContent=d.name;document.getElementById('c-curr').textContent=d.curr;document.getElementById('c-curr').style.color=d.color;document.getElementById('c-area').innerHTML=buildSVG(key);document.getElementById('c-insight').innerHTML=`🤖 <strong>Interpretasi AI:</strong> ${d.insight}`;}
+
+/* ═══════ MILESTONES ═══════ */
+const MS_DATA=[
+  {id:1,ico:'🗣️',title:'Ucapkan 3+ kata bermakna',desc:'Bahasa ekspresif — perkembangan kognitif dan sosial',status:'done',xp:150,pct:100,photos:[{e:'👦',c:'linear-gradient(135deg,#74B3FF,#ADE8FF)',d:'12 Jan'},{e:'🗣️',c:'linear-gradient(135deg,#1DC98A,#0D9E6A)',d:'20 Jan'}]},
+  {id:2,ico:'🚶',title:'Berjalan mandiri tanpa pegangan',desc:'Motorik kasar — koordinasi kaki dan keseimbangan',status:'done',xp:200,pct:100,photos:[{e:'🚶',c:'linear-gradient(135deg,#FFB020,#F09000)',d:'5 Feb'}]},
+  {id:3,ico:'🧱',title:'Tumpuk 3 balok sendiri',desc:'Motorik halus dan koordinasi tangan-mata yang presisi',status:'doing',xp:120,pct:60,photos:[{e:'🧱',c:'linear-gradient(135deg,#2E7CF6,#1A5FD4)',d:'19 Feb'}]},
+  {id:4,ico:'🥄',title:'Makan sendiri dengan sendok',desc:'Kemandirian makan dan perkembangan motorik halus',status:'doing',xp:100,pct:40,photos:[]},
+  {id:5,ico:'🎭',title:'Bermain pura-pura (pretend play)',desc:'Perkembangan kognitif, imajinatif, dan sosial-emosional',status:'todo',xp:180,pct:0,photos:[]},
+  {id:6,ico:'🎵',title:'Menyanyikan lagu pendek',desc:'Perkembangan bahasa dan memori auditif',status:'todo',xp:130,pct:0,photos:[]},
+];
+const PERIODS=['0-3','3-6','6-9','9-12','12-18','18-24'];
+let activePeriod='12-18',expandedMs=null;
+
+function buildPTabs(){document.getElementById('ptabs').innerHTML=PERIODS.map(p=>`<button class="ptab ${p===activePeriod?'on':''}" onclick="setPeriod('${p}',this)">${p} bln</button>`).join('');}
+function setPeriod(p,el){activePeriod=p;document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('on'));el.classList.add('on');}
+function buildMS(){
+  document.getElementById('ms-list').innerHTML=MS_DATA.map(m=>{
+    const stag=m.status==='done'?`<span class="tag tag-green">✓ Tercapai</span>`:m.status==='doing'?`<span class="tag tag-gold">⏳ Sedang Belajar</span>`:`<span class="tag tag-gray">○ Belum Mulai</span>`;
+    const prog=m.status!=='todo'?`<div class="ms-prog"><div class="ms-prog-row"><span class="ms-prog-t">Progress</span><span class="ms-prog-v">${m.pct}%</span></div><div class="ms-pbar"><div class="ms-pfill" style="width:${m.pct}%"></div></div></div>`:'';
+    const open=expandedMs===m.id;
+    const gal=m.photos.map((ph,i)=>`<div><div class="gal-ph" style="background:${ph.c}">${ph.e}</div><div class="gal-date">${ph.d}</div></div>`).join('');
+    const expanded=open?`<div style="border-top:1.5px solid var(--border)"><div class="ms-gallery"><div class="gal-lbl">📸 Momen</div><div class="gal-row">${gal}<div><div class="gal-add" onclick="showToast('📷 Buka kamera...')"><div style="font-size:20px;color:var(--text3)">📷</div><div style="font-size:9px;font-weight:800;color:var(--text3)">Tambah</div></div></div></div></div>${m.status==='doing'?`<div class="ms-action"><button class="btn-complete" style="background:linear-gradient(135deg,var(--green),#14B07A);box-shadow:0 5px 18px rgba(29,201,138,.35)" onclick="doComplete(${m.id},event)">🎉 Tandai Tercapai! +${m.xp} XP</button></div>`:m.status==='todo'?`<div class="ms-action"><button class="btn-start" onclick="showToast('▶ Stimulasi dimulai hari ini!')">▶ Mulai Stimulasi</button></div>`:''}</div>`:'';
+    return `<div class="ms-card ${m.status}" id="mc-${m.id}" onclick="toggleMS(${m.id})" style="position:relative;overflow:hidden"><div id="cf-${m.id}"></div><div class="ms-card-top"><div class="ms-full-ico">${m.ico}</div><div class="ms-card-b"><div class="ms-card-t">${m.title}</div><div class="ms-card-d">${m.desc}</div><div class="ms-card-r">${stag}<span class="ms-xp">+${m.xp} XP</span></div></div><span class="ms-chevron">${open?'▲':'▼'}</span></div>${prog}${expanded}</div>`;
+  }).join('');
+}
+function toggleMS(id){expandedMs=expandedMs===id?null:id;buildMS();}
+function doComplete(id,e){e.stopPropagation();const cf=document.getElementById('cf-'+id);const colors=['#2E7CF6','#FFB020','#1DC98A','#8B6CF7','#FF5C6A','#00B5A3'];cf.innerHTML=Array.from({length:12},(_,i)=>`<div class="conf" style="left:${4+i*8}%;background:${colors[i%6]};animation-delay:${i*.07}s;width:${i%2?6:10}px;height:${i%2?6:10}px"></div>`).join('');showToast('🎉 Selamat! Milestone tercapai! +'+MS_DATA.find(m=>m.id===id).xp+' XP');setTimeout(()=>{cf.innerHTML=''},1100);}
+
+/* ═══════ NUTRISI DATA ═══════ */
+let nutritionLog = {
+  sarapan: [
+    {name:'Bubur Ayam Wortel',emoji:'🍲',kcal:185,protein:8.2,karbo:28,lemak:4.5,serat:2.1},
+    {name:'Pisang Ambon',emoji:'🍌',kcal:89,protein:1.1,karbo:23,lemak:0.3,serat:2.6},
+  ],
+  snack1: [
+    {name:'Biskuit Bayi',emoji:'🍪',kcal:110,protein:2.2,karbo:20,lemak:2.8,serat:0.8},
+  ],
+  siang: [
+    {name:'Nasi Tim + Telur',emoji:'🍱',kcal:220,protein:5.8,karbo:38,lemak:5.2,serat:1.4},
+  ],
+  snack2: [],
+  malam: [
+    {name:'Puree Ubi + Susu',emoji:'🍠',kcal:76,protein:1.6,karbo:17.8,lemak:0.8,serat:2.8},
+  ],
+};
+
+const MEALS_DEF=[
+  {key:'sarapan',name:'Sarapan',ico:'☀️',color:'#FFB020'},
+  {key:'snack1',name:'Snack Pagi',ico:'🍪',color:'#FF7849'},
+  {key:'siang',name:'Makan Siang',ico:'🌤️',color:'#2E7CF6'},
+  {key:'snack2',name:'Snack Sore',ico:'🥨',color:'#8B6CF7'},
+  {key:'malam',name:'Makan Malam',ico:'🌙',color:'#00B5A3'},
+];
+
+const NEEDS=[
+  {label:'Kalori',unit:'kkal',curr:()=>totalKcal(),target:1000,color:'#00B5A3'},
+  {label:'Protein',unit:'g',curr:()=>totalMacro('protein'),target:25,color:'#2E7CF6'},
+  {label:'Karbohidrat',unit:'g',curr:()=>totalMacro('karbo'),target:130,color:'#FFB020'},
+  {label:'Lemak',unit:'g',curr:()=>totalMacro('lemak'),target:35,color:'#00B5A3'},
+  {label:'Serat',unit:'g',curr:()=>totalMacro('serat'),target:16,color:'#8B6CF7'},
+  {label:'Zat Besi',unit:'mg',curr:()=>8.2,target:11,color:'#FF7849'},
+  {label:'Kalsium',unit:'mg',curr:()=>380,target:650,color:'#1DC98A'},
+  {label:'Vitamin A',unit:'mcg',curr:()=>220,target:400,color:'#FFB020'},
+];
+
+function totalKcal(){return Object.values(nutritionLog).flat().reduce((s,i)=>s+i.kcal,0)}
+function totalMacro(k){return Math.round(Object.values(nutritionLog).flat().reduce((s,i)=>s+(i[k]||0),0)*10)/10}
+
+function buildMealLog(){
+  const mgs=document.getElementById('meal-groups');
+  mgs.innerHTML=MEALS_DEF.map(m=>{
+    const items=nutritionLog[m.key]||[];
+    const grpKcal=items.reduce((s,i)=>s+i.kcal,0);
+    const itemsHTML=items.map((item,idx)=>`
+      <div class="meal-item">
+        <div class="meal-item-photo">${item.emoji}</div>
+        <div class="meal-item-info">
+          <div class="meal-item-name">${item.name}</div>
+          <div class="meal-item-detail">${item.protein}g protein · ${item.karbo}g karbo · ${item.lemak}g lemak</div>
+        </div>
+        <div class="meal-item-kcal">${item.kcal}</div>
+        <button class="meal-item-del" onclick="deleteMealItem('${m.key}',${idx});event.stopPropagation()">✕</button>
+      </div>`).join('');
+    const addBtn=`<div class="meal-add-btn" onclick="openScanModal('${m.key}')">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="var(--blue)" stroke-width="1.5"/><line x1="8" y1="5" x2="8" y2="11" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round"/><line x1="5" y1="8" x2="11" y2="8" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Tambah dari foto AI
+    </div>`;
+    return `<div class="meal-group">
+      <div class="meal-group-hdr">
+        <div class="meal-group-ico" style="background:${m.color}22">${m.ico}</div>
+        <div class="meal-group-name">${m.name}</div>
+        ${grpKcal>0?`<div class="meal-group-kcal" style="color:${m.color}">${grpKcal} <span style="font-size:10px;color:var(--text3);font-weight:600">kkal</span></div>`:'<div style="font-size:11px;color:var(--text3);font-weight:600">Kosong</div>'}
+        <div class="meal-group-arr">${items.length>0?'▼':''}</div>
+      </div>
+      ${items.length>0?`<div class="meal-items">${itemsHTML}${addBtn}</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+function buildNeedGrid(){
+  document.getElementById('need-grid').innerHTML=NEEDS.map(n=>{
+    const cv=n.curr(),pct=Math.min(100,Math.round(cv/n.target*100));
+    const col=pct>=80?'var(--green)':pct>=50?'var(--gold)':'var(--red)';
+    return `<div class="need-item">
+      <div class="need-label">${n.label}</div>
+      <div class="need-bar"><div class="need-fill" style="width:${pct}%;background:${n.color}"></div></div>
+      <div class="need-vals"><span class="need-curr" style="color:${col}">${cv}${n.unit}</span><span class="need-target">/${n.target}${n.unit}</span></div>
+    </div>`;
+  }).join('');
+}
+
+function updateMacroDisplay(){
+  const kcal=totalKcal(),prot=totalMacro('protein'),karbo=totalMacro('karbo'),lemak=totalMacro('lemak'),serat=totalMacro('serat');
+  document.getElementById('kcal-disp').textContent=kcal;
+  document.getElementById('mb-protein').style.width=Math.min(100,prot/25*100)+'%';
+  document.getElementById('mv-protein').textContent=prot+'/25g';
+  document.getElementById('mb-karbo').style.width=Math.min(100,karbo/130*100)+'%';
+  document.getElementById('mv-karbo').textContent=karbo+'/130g';
+  document.getElementById('mb-lemak').style.width=Math.min(100,lemak/35*100)+'%';
+  document.getElementById('mv-lemak').textContent=lemak+'/35g';
+  document.getElementById('mb-serat').style.width=Math.min(100,serat/16*100)+'%';
+  document.getElementById('mv-serat').textContent=serat+'/16g';
+  buildNeedGrid();
+}
+
+function deleteMealItem(mealKey,idx){
+  nutritionLog[mealKey].splice(idx,1);
+  buildMealLog();updateMacroDisplay();
+  showToast('🗑 Item dihapus dari log');
+}
+
+/* ═══════ SCAN MODAL ═══════ */
+let currentFoodData=null,portionMult=1,selectedMealTime='siang';
+
+const DEMO_FOODS={
+  nasi:{
+    emoji:'🍚',name:'Nasi Tim Putih',portion:'±80g (4 sdm)',kcal:104,
+    protein:2.1,karbo:22.9,lemak:0.2,serat:0.4,
+    vita:['🌾 Zat Besi 0.4mg','⚡ Thiamin 0.1mg','🧀 Niasin 0.6mg'],
+    suitability:'✓ Aman',suitColor:'var(--green)',
+    notes:[
+      {ico:'✅',text:'Karbohidrat kompleks yang baik sebagai sumber energi utama Rafi.'},
+      {ico:'💡',text:'Kombinasikan dengan lauk protein seperti telur atau ikan untuk nutrisi lebih lengkap.'},
+      {ico:'⚠️',text:'Hindari nasi terlalu pulen agar tidak mudah tersedak. Tekstur lembut cukup.'},
+    ]
+  },
+  buah:{
+    emoji:'🍓',name:'Strawberry Segar',portion:'±60g (5-6 buah)',kcal:19,
+    protein:0.4,karbo:4.6,lemak:0.2,serat:1.2,
+    vita:['🍊 Vitamin C 42mg','🧬 Folat 13mcg','🔴 Mangan 0.2mg','💧 Kalium 77mg'],
+    suitability:'✓ Sangat Baik',suitColor:'var(--teal)',
+    notes:[
+      {ico:'✅',text:'Kaya Vitamin C yang membantu penyerapan zat besi — ideal dikombinasikan dengan lauk besi tinggi.'},
+      {ico:'🌟',text:'Antioksidan tinggi mendukung imunitas Rafi di usia tumbuh kembang aktif.'},
+      {ico:'✂️',text:'Potong menjadi potongan kecil (¼ buah) agar tidak tersedak ya Bunda.'},
+    ]
+  },
+  telur:{
+    emoji:'🥚',name:'Telur Ayam Kampung Rebus',portion:'±50g (1 butir)',kcal:77,
+    protein:6.3,karbo:0.6,lemak:5.3,serat:0,
+    vita:['🧠 Kolin 147mg','🌞 Vitamin D 1.1mcg','🅱️ B12 0.6mcg','🔑 Selenium 15.4mcg'],
+    suitability:'✓ Sangat Dianjurkan',suitColor:'var(--blue)',
+    notes:[
+      {ico:'🌟',text:'Sumber protein lengkap (complete protein) terbaik untuk pertumbuhan otak dan otot Rafi.'},
+      {ico:'🧠',text:'Kolin sangat tinggi — krusial untuk perkembangan memori dan fungsi kognitif usia 1-3 tahun.'},
+      {ico:'💡',text:'Telur kampung memiliki omega-3 lebih tinggi dibanding telur biasa, baik untuk perkembangan saraf.'},
+    ]
+  },
+};
+
+let targetMealKey = 'siang';
+
+function openScanModal(mealKey){
+  targetMealKey = mealKey || 'siang';
+  selectedMealTime = targetMealKey;
+  document.getElementById('scan-modal').classList.add('open');
+  resetScan();
+  buildMealTimeSelector();
+}
+function closeScanModal(){document.getElementById('scan-modal').classList.remove('open');}
+function resetScan(){
+  showState('upload');currentFoodData=null;portionMult=1;
+  document.getElementById('food-input').value='';
+}
+function showState(s){
+  ['upload','loading','result'].forEach(x=>document.getElementById('state-'+x).style.display=x===s?'block':'none');
+}
+
+function handlePhoto(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=async(ev)=>{
+    const b64=ev.target.result.split(',')[1];
+    // Show preview in loading
+    document.getElementById('preview-loading').innerHTML=`<img src="${ev.target.result}" class="preview-img" style="border-radius:var(--r)">`;
+    showState('loading');
+    startLoadingAnim();
+    await analyzeWithAI(b64, file.type||'image/jpeg');
+  };
+  reader.readAsDataURL(file);
+}
+
+function startLoadingAnim(){
+  const steps=['Mengenali jenis makanan...','Menghitung kandungan nutrisi...','Menyesuaikan porsi bayi...','Mengecek keamanan untuk 15 bulan...','Menyiapkan rekomendasi AI...'];
+  let i=0;const el=document.getElementById('loading-step');
+  const iv=setInterval(()=>{if(i>=steps.length){clearInterval(iv);return;}el.textContent=steps[i++];},700);
+  return iv;
+}
+
+async function analyzeWithAI(base64Data, mimeType){
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:`Kamu adalah ahli gizi anak dan spesialis pediatri berbasis panduan IDAI dan AKG Indonesia 2019.
+Analisis foto makanan dan berikan data nutrisi untuk bayi usia 15 bulan (9.9kg, 76.9cm).
+Jawab HANYA dengan JSON valid (tanpa markdown, tanpa backtick):
+{
+  "name": "nama makanan dalam bahasa Indonesia",
+  "emoji": "1 emoji yang sesuai",
+  "portion": "estimasi porsi misal ±80g (4 sdm)",
+  "kcal": angka kalori,
+  "protein": angka gram,
+  "karbo": angka gram,
+  "lemak": angka gram,
+  "serat": angka gram,
+  "vita": ["emoji Nama Vitamin/Mineral jumlah", ...] (maks 4),
+  "suitability": "✓ Aman" atau "✓ Sangat Baik" atau "⚠ Perhatikan" atau "✗ Hindari",
+  "suitColor": "var(--green)" atau "var(--teal)" atau "var(--gold)" atau "var(--red)",
+  "notes": [
+    {"ico": "emoji", "text": "catatan penting untuk ibu"},
+    {"ico": "emoji", "text": "catatan penting untuk ibu"},
+    {"ico": "emoji", "text": "catatan penting untuk ibu"}
+  ]
+}`,
+        messages:[{role:'user',content:[
+          {type:'image',source:{type:'base64',media_type:mimeType,data:base64Data}},
+          {type:'text',text:'Analisis makanan dalam foto ini untuk bayi usia 15 bulan. Berikan data nutrisi lengkap dan catatan keamanan.'}
+        ]}]
+      })
+    });
+    const data=await resp.json();
+    const txt=data.content.find(b=>b.type==='text')?.text||'';
+    const clean=txt.replace(/```json|```/g,'').trim();
+    const food=JSON.parse(clean);
+    // Show photo in result
+    document.getElementById('result-img').style.background='';
+    document.getElementById('result-img').innerHTML=`<div style="width:100%;height:160px;display:flex;align-items:center;justify-content:center;font-size:80px;background:var(--teal-lt)">${food.emoji}</div>`;
+    showFoodResult(food);
+  }catch(err){
+    console.error(err);
+    showState('upload');
+    showToast('❌ Gagal analisis, coba lagi');
+  }
+}
+
+function demoScan(key){
+  const food=DEMO_FOODS[key];
+  showState('loading');
+  const loadSteps=['Mengenali jenis makanan...','Menghitung kandungan nutrisi...','Menyesuaikan porsi bayi...','Mengecek keamanan untuk 15 bulan...','Menyiapkan rekomendasi AI...'];
+  let si=0;const sl=document.getElementById('loading-step');
+  document.getElementById('preview-loading').innerHTML=`<div style="width:100%;height:120px;display:flex;align-items:center;justify-content:center;font-size:80px;background:var(--teal-lt);border-radius:var(--r)">${food.emoji}</div>`;
+  const iv=setInterval(()=>{if(si>=loadSteps.length){clearInterval(iv);showFoodResult(food);return;}sl.textContent=loadSteps[si++];},600);
+}
+
+function showFoodResult(food){
+  currentFoodData=food;portionMult=1;
+  document.getElementById('r-img').textContent=food.emoji;
+  document.getElementById('r-name').textContent=food.name;
+  document.getElementById('r-portion').textContent=food.portion;
+  document.getElementById('r-suitability').innerHTML=`<span class="tag" style="background:${food.suitColor}22;color:${food.suitColor};border:1.5px solid ${food.suitColor}44">${food.suitability}</span>`;
+  document.getElementById('r-kcal').textContent=food.kcal;
+  document.getElementById('portion-disp').textContent='1×';
+  const macros=[
+    {lbl:'Protein',val:food.protein,unit:'g',color:'#2E7CF6'},
+    {lbl:'Karbo',val:food.karbo,unit:'g',color:'#FFB020'},
+    {lbl:'Lemak',val:food.lemak,unit:'g',color:'#00B5A3'},
+    {lbl:'Serat',val:food.serat,unit:'g',color:'#8B6CF7'},
+  ];
+  document.getElementById('r-macros').innerHTML=macros.map(m=>`
+    <div class="result-macro">
+      <div class="result-macro-val" style="color:${m.color}">${m.val}</div>
+      <div class="result-macro-unit">${m.unit}</div>
+      <div class="result-macro-lbl">${m.lbl}</div>
+    </div>`).join('');
+  document.getElementById('r-vita').innerHTML=(food.vita||[]).map(v=>`<span class="vita-chip">${v}</span>`).join('');
+  document.getElementById('r-notes').innerHTML=(food.notes||[]).map(n=>`<div class="ai-note-item"><span class="note-ico">${n.ico}</span><span>${n.text}</span></div>`).join('');
+  buildMealTimeSelector();
+  showState('result');
+}
+
+function buildMealTimeSelector(){
+  document.getElementById('mealtime-row').innerHTML=MEALS_DEF.map(m=>`
+    <button class="mt-btn ${m.key===selectedMealTime?'on':''}" onclick="selectMealTime('${m.key}',this)">${m.ico}<br><span style="font-size:9px">${m.name}</span></button>`).join('');
+}
+function selectMealTime(key,el){
+  selectedMealTime=key;
+  document.querySelectorAll('.mt-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
+
+function adjPortion(delta){
+  portionMult=Math.max(0.25,Math.round((portionMult+delta)*4)/4);
+  document.getElementById('portion-disp').textContent=portionMult+'×';
+  if(currentFoodData){
+    document.getElementById('r-kcal').textContent=Math.round(currentFoodData.kcal*portionMult);
+    const macros=[
+      {id:'r-macros',vals:[currentFoodData.protein,currentFoodData.karbo,currentFoodData.lemak,currentFoodData.serat]}
+    ];
+    const mc=document.getElementById('r-macros').querySelectorAll('.result-macro-val');
+    [currentFoodData.protein,currentFoodData.karbo,currentFoodData.lemak,currentFoodData.serat].forEach((v,i)=>{
+      if(mc[i]) mc[i].textContent=Math.round(v*portionMult*10)/10;
+    });
+  }
+}
+
+function addToLog(){
+  if(!currentFoodData)return;
+  const f=currentFoodData,p=portionMult;
+  nutritionLog[selectedMealTime].push({
+    name:f.name+(p!==1?' (×'+p+')':''),
+    emoji:f.emoji,
+    kcal:Math.round(f.kcal*p),
+    protein:Math.round(f.protein*p*10)/10,
+    karbo:Math.round(f.karbo*p*10)/10,
+    lemak:Math.round(f.lemak*p*10)/10,
+    serat:Math.round(f.serat*p*10)/10,
+  });
+  closeScanModal();
+  buildMealLog();updateMacroDisplay();
+  const mName=MEALS_DEF.find(m=>m.key===selectedMealTime).name;
+  showToast('✓ '+f.name+' ditambahkan ke '+mName+' 🎉');
+}
+
+/* ═══════ CHAT ═══════ */
+let msgs=[
+  {role:'bot',text:'Halo Bunda! 👋\n\nSaya AI Asisten berbasis panduan dr. Piprim, SpA(K) & IDAI. Siap bantu pertanyaan seputar tumbuh kembang Rafi!'},
+  {role:'user',text:'Rafi 15 bulan belum bisa tumpuk balok, normal ga Dok?'},
+  {role:'bot',text:'Tenang Bunda 😊 Kemampuan menumpuk balok biasanya muncul di 15–18 bulan — Rafi masih dalam rentang normal.\n\nCoba stimulasi:\n• Masukkan bola ke lubang botol\n• Meremas-remas playdough\n• Pegang krayon tebal\n\nKalau usia 18 bulan belum bisa, baru perlu evaluasi lebih lanjut ya 🩺'},
+];
+const BOT=['Terima kasih pertanyaannya Bunda 😊\n\nBerdasarkan panduan IDAI & WHO, Rafi masih dalam perkembangan yang normal. Tetap konsisten dengan stimulasi harian ya!','Pertanyaan bagus! 🩺 Untuk usia Rafi, panduan dr. Piprim menyarankan stimulasi yang menyenangkan dan tidak memaksa.','Berdasarkan data tumbuh kembang Rafi, perkembangannya sesuai milestone IDAI usia 15 bulan. Ada kekhawatiran spesifik? Jadwalkan konsultasi langsung ya Bunda.'];
+function renderChat(){const c=document.getElementById('chat-msgs');c.innerHTML=msgs.map(m=>`<div class="msg-wrap ${m.role==='bot'?'bot':'usr'}">${m.role==='bot'?'<div class="msg-sndr">dr. Piprim AI 🩺</div>':''}<div class="msg-bub">${m.text}</div><div class="msg-time">${m.role==='usr'?'Baru saja':'• Panduan IDAI'}</div></div>`).join('');c.scrollTop=c.scrollHeight;}
+function sendMsg(t){const inp=document.getElementById('chat-inp');const tx=t||inp.value.trim();if(!tx)return;msgs.push({role:'usr',text:tx});inp.value='';renderChat();setTimeout(()=>{msgs.push({role:'bot',text:BOT[Math.floor(Math.random()*BOT.length)]});renderChat();},900);}
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&cur==='chat')sendMsg();});
+
+/* ═══════ ACHIEVEMENTS ═══════ */
+const ACH=[{e:'🏆',n:'Milestone Hunter',d:'5 milestone',lit:true},{e:'📸',n:'Memory Maker',d:'10 foto',lit:true},{e:'🔥',n:'7-Day Streak',d:'Login 7 hari',lit:true},{e:'⭐',n:'Star Parent',d:'Level 5',lit:true},{e:'🥗',n:'Nutrisi Pro',d:'7 hari lengkap',lit:false},{e:'📈',n:'Growth Master',d:'3 bln on-track',lit:false}];
+function buildAch(){document.getElementById('ach-grid').innerHTML=ACH.map(a=>`<div class="ach ${a.lit?'lit':''}" onclick="showToast('${a.lit?'🏅 '+a.n+' sudah kamu raih!':'⏳ Terus semangat raih '+a.n+'!'}')" ><div class="ach-e">${a.e}</div><div class="ach-n">${a.n}</div><div class="ach-d">${a.d}</div></div>`).join('');}
+
+/* ═══════ MISC ═══════ */
+function doActivity(){const f=document.getElementById('xp-fill');if(f){f.style.width='77%';document.querySelector('.xp-val').textContent='770 / 1000';}showToast('✓ Aktivitas selesai! +50 XP 🎉');}
+let _tTmr;function showToast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');if(_tTmr)clearTimeout(_tTmr);_tTmr=setTimeout(()=>el.classList.remove('show'),2700);}
+
+/* ═══════ INIT ═══════ */
+window.addEventListener('DOMContentLoaded',()=>{
+  swChart('weight',document.querySelector('.ctab.on'));
+  buildPTabs();buildMS();renderChat();
+  document.getElementById('chat-qk').innerHTML=['Kapan imunisasi?','Menu MPASI 15 bln?','Kenapa GTM?','Tanda speech delay?'].map(q=>`<button class="qchip" onclick="sendMsg('${q}')">${q}</button>`).join('');
+  buildAch();buildMealLog();updateMacroDisplay();
+});
+</script>
+</body>
+</html>

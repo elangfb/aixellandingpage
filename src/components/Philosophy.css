@@ -1,0 +1,49 @@
+/* PILLARS */
+.pillars-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-top: 60px;
+}
+
+.pillar {
+    background: var(--bg-white);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 28px 22px;
+    transition: all 0.3s;
+}
+
+.pillar:hover {
+    border-color: rgba(184, 146, 42, 0.3);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.pillar-num {
+    font-family: 'DM Sans', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    margin-bottom: 14px;
+}
+
+.pillar-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 8px;
+}
+
+.pillar-desc {
+    font-size: 13px;
+    color: var(--text-soft);
+    line-height: 1.6;
+}
+
+@media (max-width: 960px) {
+    .pillars-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

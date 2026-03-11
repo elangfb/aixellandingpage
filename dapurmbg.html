@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investment Proposal — Dapur MBG Kanisa</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --g-dark:   #0f2d13;
+    --g-deep:   #1b4a20;
+    --g-mid:    #2e7d32;
+    --g-light:  #4caf50;
+    --g-pale:   #c8e6c9;
+    --g-ghost:  #e8f5e9;
+    --gold:     #f9a825;
+    --gold-dk:  #c17900;
+    --gold-lt:  #fff8e1;
+    --cream:    #fafaf7;
+    --slate:    #334155;
+    --gray:     #64748b;
+    --lightgray:#e2e8f0;
+    --white:    #ffffff;
+    --shadow:   0 4px 24px rgba(0,0,0,0.10);
+    --shadow-lg:0 12px 48px rgba(0,0,0,0.16);
+    --radius:   12px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--slate);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--g-ghost); }
+  ::-webkit-scrollbar-thumb { background: var(--g-mid); border-radius: 99px; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 2.5rem;
+    height: 60px;
+    background: rgba(15,45,19,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(249,168,37,0.2);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--g-dark);
+    background: var(--gold);
+    padding: 0.25rem 0.75rem;
+    border-radius: 99px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    background: var(--g-dark);
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 6rem 4rem 4rem;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; pointer-events: none;
+  }
+  .hero-bg .circle1 {
+    position: absolute; right: -8vw; top: -8vw;
+    width: 55vw; height: 55vw;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(46,125,50,0.35) 0%, transparent 70%);
+  }
+  .hero-bg .circle2 {
+    position: absolute; right: 5vw; bottom: 2vh;
+    width: 25vw; height: 25vw;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(249,168,37,0.18) 0%, transparent 70%);
+  }
+  .hero-bg .grid-lines {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--gold);
+    color: var(--g-dark);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.35rem 1rem;
+    border-radius: 99px;
+    width: fit-content;
+    margin-bottom: 2rem;
+    opacity: 0; animation: fadeUp .7s .2s forwards;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 7vw, 6.5rem);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.0;
+    margin-bottom: 0.3rem;
+    opacity: 0; animation: fadeUp .8s .35s forwards;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .hero-sub {
+    font-size: 1.05rem;
+    color: rgba(200,230,201,0.75);
+    max-width: 500px;
+    margin: 1.2rem 0 3.5rem;
+    opacity: 0; animation: fadeUp .8s .5s forwards;
+  }
+  .hero-kpis {
+    display: flex; gap: 1px;
+    opacity: 0; animation: fadeUp .8s .65s forwards;
+  }
+  .hero-kpi {
+    flex: 1;
+    background: rgba(46,125,50,0.25);
+    border: 1px solid rgba(46,125,50,0.4);
+    padding: 1.4rem 1.6rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform .3s, background .3s;
+  }
+  .hero-kpi:hover { background: rgba(46,125,50,0.4); transform: translateY(-3px); }
+  .hero-kpi:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+  .hero-kpi:last-child { border-radius: 0 var(--radius) var(--radius) 0; }
+  .hero-kpi-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .hero-kpi-lbl {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(200,230,201,0.7);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 0.3rem;
+  }
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    opacity: 0; animation: fadeUp .8s 1s forwards;
+  }
+  .scroll-dot {
+    width: 1px; height: 50px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+  @keyframes scrollLine {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    padding: 6rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .full-width { max-width: 100%; padding: 6rem 4rem; }
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--g-mid);
+    margin-bottom: 0.7rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 700;
+    color: var(--g-dark);
+    line-height: 1.15;
+    margin-bottom: 0.5rem;
+  }
+  .section-desc {
+    font-size: 1rem;
+    color: var(--gray);
+    max-width: 600px;
+    margin-bottom: 3rem;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    width: 100%; height: 1px;
+    background: linear-gradient(to right, transparent, var(--g-pale), transparent);
+    margin: 0 auto;
+  }
+
+  /* ── STRUCTURE ── */
+  .struct-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .struct-card {
+    background: var(--white);
+    border: 1px solid var(--lightgray);
+    border-radius: var(--radius);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform .3s, box-shadow .3s;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  .struct-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .struct-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(to right, var(--g-mid), var(--g-light));
+  }
+  .struct-card.gold::before { background: linear-gradient(to right, var(--gold), #ffca28); }
+  .struct-card-icon {
+    width: 44px; height: 44px;
+    background: var(--g-ghost);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 1.2rem;
+  }
+  .struct-card.gold .struct-card-icon { background: var(--gold-lt); }
+  .struct-card-lbl {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 0.4rem;
+  }
+  .struct-card-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--g-dark);
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+  }
+  .struct-card.gold .struct-card-val { color: var(--gold-dk); }
+  .struct-card-sub {
+    font-size: 0.85rem;
+    color: var(--gray);
+  }
+
+  /* ── BIG STAT ── */
+  .big-stat-wrap {
+    background: var(--g-dark);
+    border-radius: 20px;
+    padding: 3.5rem;
+    display: flex; gap: 2px;
+    overflow: hidden;
+    position: relative;
+  }
+  .big-stat-wrap::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(to right, var(--gold), var(--g-light), var(--gold));
+  }
+  .big-stat {
+    flex: 1;
+    padding: 1.5rem 2rem;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    text-align: center;
+  }
+  .big-stat:last-child { border-right: none; }
+  .big-stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+    display: block;
+  }
+  .big-stat-unit {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .big-stat-lbl {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: rgba(200,230,201,0.65);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 0.6rem;
+    display: block;
+  }
+
+  /* ── CASH FLOW CHART ── */
+  .cf-section { background: var(--g-ghost); }
+  .cf-container {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: var(--shadow);
+  }
+  .cf-chart-area {
+    position: relative;
+    height: 320px;
+    margin-bottom: 1.5rem;
+  }
+  .cf-chart-svg { width: 100%; height: 100%; }
+
+  /* ── COMPARISON CHART ── */
+  .compare-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .compare-row {
+    display: flex; align-items: center; gap: 1.2rem;
+    opacity: 0; transform: translateX(-20px);
+  }
+  .compare-lbl {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--slate);
+    width: 130px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+  .compare-bar-wrap {
+    flex: 1;
+    height: 36px;
+    background: var(--lightgray);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+  }
+  .compare-bar {
+    height: 100%;
+    border-radius: 6px;
+    background: var(--g-pale);
+    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex; align-items: center;
+    padding-right: 0.75rem;
+    justify-content: flex-end;
+    width: 0;
+  }
+  .compare-bar.highlight {
+    background: linear-gradient(to right, var(--g-mid), var(--gold));
+  }
+  .compare-bar-val {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .compare-bar:not(.highlight) .compare-bar-val { color: var(--slate); }
+
+  /* ── TIMELINE ── */
+  .timeline-track {
+    position: relative;
+    height: 90px;
+    display: flex;
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow);
+  }
+  .tl-seg {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--white);
+    padding: 0.5rem;
+    text-align: center;
+    transition: filter .3s;
+  }
+  .tl-seg:hover { filter: brightness(1.15); }
+  .tl-seg-title { font-size: 0.8rem; font-weight: 700; }
+  .tl-seg-sub { font-size: 0.68rem; opacity: .8; }
+  .tl-invest { flex: 1; background: var(--g-dark); }
+  .tl-grace  { flex: 1.5; background: var(--gray); }
+  .tl-active { flex: 9.5; background: var(--g-mid); }
+  .tl-payback { flex: 0.5; background: var(--gold); }
+  .tl-profit { flex: 12.5; background: var(--g-light); }
+
+  .milestone-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+  .milestone-table th {
+    background: var(--g-dark);
+    color: var(--white);
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.9rem 1.2rem;
+    text-align: left;
+  }
+  .milestone-table td {
+    padding: 0.85rem 1.2rem;
+    border-bottom: 1px solid var(--lightgray);
+    vertical-align: middle;
+  }
+  .milestone-table tr:nth-child(even) td { background: var(--g-ghost); }
+  .milestone-table tr:hover td { background: var(--g-pale); }
+  .mono { font-family: 'DM Mono', monospace; font-size: 0.82rem; }
+  .badge {
+    display: inline-block;
+    padding: 0.2rem 0.65rem;
+    border-radius: 99px;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+  .badge-green { background: var(--g-ghost); color: var(--g-mid); border: 1px solid var(--g-pale); }
+  .badge-gold  { background: var(--gold-lt); color: var(--gold-dk); border: 1px solid #f9c550; }
+  .badge-red   { background: #fef2f2; color: #b91c1c; border: 1px solid #fca5a5; }
+
+  /* ── ROI CARDS ── */
+  .roi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.2rem;
+    margin-bottom: 3rem;
+  }
+  .roi-card {
+    border-radius: var(--radius);
+    padding: 1.8rem 1.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  .roi-card.dark { background: var(--g-dark); }
+  .roi-card.mid  { background: var(--g-mid); }
+  .roi-card.gold-bg { background: linear-gradient(135deg, var(--gold), #e65100); }
+  .roi-card.green{ background: var(--g-light); }
+  .roi-card-lbl {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 0.7rem;
+  }
+  .roi-card-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.6rem;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+  .roi-card.gold-bg .roi-card-val { font-size: 2rem; }
+  .roi-card-sub {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.55);
+  }
+
+  /* ── FORMULA BOX ── */
+  .formula-box {
+    background: var(--g-dark);
+    border-radius: var(--radius);
+    padding: 2rem 2.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.88rem;
+    line-height: 2;
+    color: rgba(200,230,201,0.85);
+    border-left: 3px solid var(--gold);
+  }
+  .formula-box .comment { color: rgba(255,255,255,0.3); }
+  .formula-box .highlight { color: var(--gold); font-weight: 700; }
+  .formula-box .result { color: var(--g-light); font-weight: 700; }
+
+  /* ── SENSITIVITY ── */
+  .sens-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .sens-card {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    opacity: 0; transform: translateY(30px);
+  }
+  .sens-header {
+    padding: 1.5rem 1.8rem;
+    text-align: center;
+  }
+  .sens-body {
+    background: var(--white);
+    padding: 1.5rem 1.8rem;
+  }
+  .sens-header-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.3rem;
+  }
+  .sens-header-sub {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.7);
+  }
+  .sens-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--lightgray);
+    font-size: 0.85rem;
+  }
+  .sens-row:last-child { border-bottom: none; }
+  .sens-row-key { color: var(--gray); }
+  .sens-row-val { font-weight: 700; color: var(--slate); }
+  .sens-pessimis { background: #64748b; }
+  .sens-base     { background: var(--g-mid); }
+  .sens-optimis  { background: linear-gradient(135deg, var(--gold), #e65100); }
+  .sens-optimis .sens-row-val { color: var(--g-dark); }
+
+  /* ── RISK ── */
+  .risk-grid {
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+  .risk-card {
+    display: flex; gap: 1.5rem;
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 1.4rem 1.8rem;
+    border: 1px solid var(--lightgray);
+    align-items: flex-start;
+    opacity: 0; transform: translateX(-20px);
+    transition: box-shadow .3s;
+  }
+  .risk-card:hover { box-shadow: var(--shadow); }
+  .risk-icon {
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  .risk-body { flex: 1; }
+  .risk-title { font-weight: 600; font-size: 0.95rem; color: var(--g-dark); margin-bottom: 0.3rem; }
+  .risk-desc  { font-size: 0.85rem; color: var(--gray); }
+  .risk-level {
+    padding: 0.2rem 0.75rem;
+    border-radius: 99px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    white-space: nowrap;
+    align-self: center;
+  }
+
+  /* ── CLOSING ── */
+  .closing {
+    background: var(--g-dark);
+    padding: 8rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .closing-bg .c1 {
+    position: absolute; left: -10vw; top: 50%; transform: translateY(-50%);
+    width: 40vw; height: 40vw; border-radius: 50%;
+    background: radial-gradient(circle, rgba(46,125,50,0.2) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .closing-bg .c2 {
+    position: absolute; right: -8vw; top: 50%; transform: translateY(-50%);
+    width: 35vw; height: 35vw; border-radius: 50%;
+    background: radial-gradient(circle, rgba(249,168,37,0.12) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .closing-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 900;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+    position: relative;
+  }
+  .closing-title em { color: var(--gold); font-style: italic; }
+  .closing-sub {
+    font-size: 1rem;
+    color: rgba(200,230,201,0.7);
+    max-width: 500px;
+    margin: 1rem auto 3.5rem;
+    position: relative;
+  }
+  .closing-stats {
+    display: flex; justify-content: center; gap: 1rem;
+    flex-wrap: wrap;
+    position: relative;
+  }
+  .closing-stat {
+    background: rgba(46,125,50,0.25);
+    border: 1px solid rgba(46,125,50,0.45);
+    border-radius: var(--radius);
+    padding: 1.4rem 2rem;
+    min-width: 160px;
+    transition: background .3s, transform .3s;
+  }
+  .closing-stat:hover { background: rgba(46,125,50,0.4); transform: translateY(-4px); }
+  .closing-stat-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--gold);
+    display: block;
+  }
+  .closing-stat-lbl {
+    font-size: 0.75rem;
+    color: rgba(200,230,201,0.6);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 0.3rem;
+    display: block;
+  }
+  .closing-footer {
+    margin-top: 4rem;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.3);
+    position: relative;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s, transform .7s; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-left { opacity: 0; transform: translateX(-30px); transition: opacity .7s, transform .7s; }
+  .reveal-left.visible { opacity: 1; transform: translateX(0); }
+
+  /* ── UTIL ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+  .mt1 { margin-top: 1rem; }
+  .mt2 { margin-top: 2rem; }
+  .mt3 { margin-top: 3rem; }
+
+  @media (max-width: 900px) {
+    nav .nav-links { display: none; }
+    .hero { padding: 5rem 1.5rem 3rem; }
+    section { padding: 4rem 1.5rem; }
+    .hero-kpis { flex-direction: column; gap: 1px; }
+    .struct-grid { grid-template-columns: 1fr 1fr; }
+    .roi-grid { grid-template-columns: 1fr 1fr; }
+    .sens-grid { grid-template-columns: 1fr; }
+    .two-col { grid-template-columns: 1fr; }
+    .big-stat-wrap { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">Kanisa</span>
+  <ul class="nav-links">
+    <li><a href="#struktur">Struktur</a></li>
+    <li><a href="#cashflow">Cash Flow</a></li>
+    <li><a href="#roi">ROI & IRR</a></li>
+    <li><a href="#risiko">Risiko</a></li>
+  </ul>
+  <span class="nav-badge">Confidential 2026</span>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg">
+    <div class="circle1"></div>
+    <div class="circle2"></div>
+    <div class="grid-lines"></div>
+  </div>
+  <div class="hero-tag">📋 Investment Proposal</div>
+  <h1 class="hero-title">Dapur MBG<br><em>Kanisa</em></h1>
+  <p class="hero-sub">Program Makan Bergizi Gratis (MBG) · Peluang Investasi Bagi Hasil · 2026</p>
+  <div class="hero-kpis">
+    <div class="hero-kpi">
+      <div class="hero-kpi-val">Rp 1,45 M</div>
+      <div class="hero-kpi-lbl">Nilai Investasi</div>
+    </div>
+    <div class="hero-kpi">
+      <div class="hero-kpi-val">Rp 75 Jt</div>
+      <div class="hero-kpi-lbl">Bagi Hasil / Bulan</div>
+    </div>
+    <div class="hero-kpi">
+      <div class="hero-kpi-val">48 Bulan</div>
+      <div class="hero-kpi-lbl">Periode Kerjasama</div>
+    </div>
+    <div class="hero-kpi">
+      <div class="hero-kpi-val">58%</div>
+      <div class="hero-kpi-lbl">Annual IRR</div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-dot"></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- STRUKTUR INVESTASI -->
+<section id="struktur">
+  <div class="section-label">01 — Struktur Investasi</div>
+  <h2 class="section-title reveal">Parameter &amp; Ketentuan<br>Kerjasama</h2>
+  <p class="section-desc reveal">Skema investasi bagi hasil yang transparan dan terstruktur, dirancang untuk memberikan kepastian return kepada investor.</p>
+
+  <div class="struct-grid">
+    <div class="struct-card reveal">
+      <div class="struct-card-icon">💰</div>
+      <div class="struct-card-lbl">Nilai Investasi</div>
+      <div class="struct-card-val">Rp 1.450.000.000</div>
+      <div class="struct-card-sub">Modal awal pembangunan & operasional dapur MBG</div>
+    </div>
+    <div class="struct-card reveal" style="transition-delay:.1s">
+      <div class="struct-card-icon">⏳</div>
+      <div class="struct-card-lbl">Grace Period</div>
+      <div class="struct-card-val">3 Bulan</div>
+      <div class="struct-card-sub">Bulan 1–3: Periode setup, instalasi, dan uji operasional dapur</div>
+    </div>
+    <div class="struct-card reveal" style="transition-delay:.2s">
+      <div class="struct-card-icon">📈</div>
+      <div class="struct-card-lbl">Bagi Hasil / Bulan</div>
+      <div class="struct-card-val">Rp 75.000.000</div>
+      <div class="struct-card-sub">Dibayar mulai bulan ke-4 hingga bulan ke-48</div>
+    </div>
+    <div class="struct-card gold reveal" style="transition-delay:.3s">
+      <div class="struct-card-icon">🤝</div>
+      <div class="struct-card-lbl">Periode Kerjasama</div>
+      <div class="struct-card-val">48 Bulan</div>
+      <div class="struct-card-sub">Total 51 bulan (3 grace + 48 aktif bagi hasil)</div>
+    </div>
+    <div class="struct-card gold reveal" style="transition-delay:.4s">
+      <div class="struct-card-icon">📊</div>
+      <div class="struct-card-lbl">Bulan Aktif Bagi Hasil</div>
+      <div class="struct-card-val">48 Bulan</div>
+      <div class="struct-card-sub">48 bulan penuh sejak dapur beroperasi (bulan ke-4 s/d 51)</div>
+    </div>
+    <div class="struct-card gold reveal" style="transition-delay:.5s">
+      <div class="struct-card-icon">🏆</div>
+      <div class="struct-card-lbl">Total Bagi Hasil</div>
+      <div class="struct-card-val">Rp 3.600.000.000</div>
+      <div class="struct-card-sub">48 bulan × Rp 75.000.000 per bulan</div>
+    </div>
+  </div>
+
+  <div class="mt3">
+    <div class="big-stat-wrap reveal">
+      <div class="big-stat">
+        <span class="big-stat-num">Rp 3,60</span><span class="big-stat-unit"> M</span>
+        <span class="big-stat-lbl">Total Penerimaan</span>
+      </div>
+      <div class="big-stat">
+        <span class="big-stat-num">Rp 2,15</span><span class="big-stat-unit"> M</span>
+        <span class="big-stat-lbl">Net Profit Investor</span>
+      </div>
+      <div class="big-stat">
+        <span class="big-stat-num">148</span><span class="big-stat-unit">%</span>
+        <span class="big-stat-lbl">Total ROI</span>
+      </div>
+      <div class="big-stat">
+        <span class="big-stat-num">~22</span><span class="big-stat-unit"> bln</span>
+        <span class="big-stat-lbl">Payback Period</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CASH FLOW -->
+<section id="cashflow" style="max-width:1200px; margin: 0 auto; padding: 6rem 4rem;">
+  <div class="section-label">02 — Proyeksi Arus Kas</div>
+  <h2 class="section-title reveal">Cash Flow Kumulatif<br>Investor</h2>
+  <p class="section-desc reveal">Visualisasi akumulasi penerimaan investor dari bulan 0 hingga bulan 51 (3 grace + 48 aktif), menunjukkan titik break-even dan zona profit murni.</p>
+
+  <div class="cf-container reveal">
+    <div class="cf-chart-area">
+      <svg id="cfSvg" class="cf-chart-svg" viewBox="0 0 1000 300" preserveAspectRatio="none"></svg>
+    </div>
+    <div style="display:flex; gap: 1.5rem; justify-content:center; font-size:0.82rem; color:var(--gray);">
+      <span style="display:flex;align-items:center;gap:.5rem"><span style="width:24px;height:3px;background:var(--g-mid);display:inline-block;border-radius:2px"></span> Cash Flow Kumulatif</span>
+      <span style="display:flex;align-items:center;gap:.5rem"><span style="width:24px;height:3px;background:var(--gold);display:inline-block;border-radius:2px;border-top:2px dashed var(--gold)"></span> Break-even</span>
+      <span style="display:flex;align-items:center;gap:.5rem"><span style="width:12px;height:12px;background:var(--g-pale);display:inline-block;border-radius:3px;border:1px solid var(--g-pale)"></span> Zona Profit</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ROI & IRR -->
+<section id="roi">
+  <div class="section-label">03 — Analisis Kelayakan</div>
+  <h2 class="section-title reveal">ROI &amp; IRR Analysis</h2>
+  <p class="section-desc reveal">Indikator finansial utama yang membuktikan kelayakan investasi ini jauh melampaui instrumen konvensional.</p>
+
+  <div class="roi-grid">
+    <div class="roi-card dark reveal">
+      <div class="roi-card-lbl">Total ROI</div>
+      <div class="roi-card-val">148.3%</div>
+      <div class="roi-card-sub">Return on Investment 51 bulan</div>
+    </div>
+    <div class="roi-card mid reveal" style="transition-delay:.1s">
+      <div class="roi-card-lbl">ROI Tahunan</div>
+      <div class="roi-card-val">34.9%</div>
+      <div class="roi-card-sub">Annualized return per tahun</div>
+    </div>
+    <div class="roi-card gold-bg reveal" style="transition-delay:.2s">
+      <div class="roi-card-lbl">Annual IRR</div>
+      <div class="roi-card-val">58%</div>
+      <div class="roi-card-sub">Internal Rate of Return p.a.</div>
+    </div>
+    <div class="roi-card green reveal" style="transition-delay:.3s">
+      <div class="roi-card-lbl">NPV @ 12%</div>
+      <div class="roi-card-val" style="font-size:2rem">Rp 1,35 M</div>
+      <div class="roi-card-sub">Net Present Value positif ✅</div>
+    </div>
+  </div>
+
+  <div class="two-col reveal">
+    <div>
+      <h3 style="font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--g-dark); margin-bottom:1.2rem;">
+        Perbandingan vs Instrumen Lain
+      </h3>
+      <div class="compare-grid" id="compareGrid">
+        <div class="compare-row" data-pct="5.5" data-max="35">
+          <span class="compare-lbl">Deposito Bank</span>
+          <div class="compare-bar-wrap">
+            <div class="compare-bar" style="width:0%">
+              <span class="compare-bar-val">5.5%</span>
+            </div>
+          </div>
+        </div>
+        <div class="compare-row" data-pct="7" data-max="35">
+          <span class="compare-lbl">Obligasi Gov.</span>
+          <div class="compare-bar-wrap">
+            <div class="compare-bar" style="width:0%">
+              <span class="compare-bar-val">7%</span>
+            </div>
+          </div>
+        </div>
+        <div class="compare-row" data-pct="12" data-max="35">
+          <span class="compare-lbl">Reksa Dana</span>
+          <div class="compare-bar-wrap">
+            <div class="compare-bar" style="width:0%">
+              <span class="compare-bar-val">12%</span>
+            </div>
+          </div>
+        </div>
+        <div class="compare-row" data-pct="15" data-max="35">
+          <span class="compare-lbl">Properti</span>
+          <div class="compare-bar-wrap">
+            <div class="compare-bar" style="width:0%">
+              <span class="compare-bar-val">15%</span>
+            </div>
+          </div>
+        </div>
+        <div class="compare-row" data-pct="34.9" data-max="37">
+          <span class="compare-lbl" style="color:var(--g-dark);font-weight:700;">Kanisa MBG ✦</span>
+          <div class="compare-bar-wrap">
+            <div class="compare-bar highlight" style="width:0%">
+              <span class="compare-bar-val">34.9%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h3 style="font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--g-dark); margin-bottom:1.2rem;">
+        Formula Perhitungan
+      </h3>
+      <div class="formula-box">
+        <span class="comment">// ROI Calculation</span><br>
+        ROI &nbsp;= (Total Return − Investasi) / Investasi<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= (3.600M − 1.45M) / 1.45M<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= <span class="highlight">148.3%</span><br>
+        <br>
+        <span class="comment">// Payback Period</span><br>
+        PBP &nbsp;= Grace + (Investasi / CF/bln)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= 3 + (1.45M / 75Jt)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= <span class="highlight">~22.3 bulan</span><br>
+        <br>
+        <span class="comment">// Annual IRR (Newton-Raphson)</span><br>
+        IRR &nbsp;= (1 + IRR_monthly)^12 − 1<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= <span class="result">≈ 58% p.a.</span><br>
+        <br>
+        <span class="comment">// NPV @ 12% discount rate</span><br>
+        NPV &nbsp;= Σ CF_t / (1+r)^t − Initial<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= <span class="result">+ Rp 1.350.000.000 ✅</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TIMELINE -->
+<section id="timeline" style="max-width:1200px; margin: 0 auto; padding: 5rem 4rem;">
+  <div class="section-label">04 — Timeline & Payback</div>
+  <h2 class="section-title reveal">Alur Waktu Investasi</h2>
+  <p class="section-desc reveal">Peta perjalanan investasi dari hari pertama hingga berakhirnya periode kerjasama.</p>
+
+  <div class="timeline-track reveal">
+    <div class="tl-seg tl-invest">
+      <div class="tl-seg-title">Investasi</div>
+      <div class="tl-seg-sub">Bln 0</div>
+    </div>
+    <div class="tl-seg tl-grace">
+      <div class="tl-seg-title">Grace Period</div>
+      <div class="tl-seg-sub">Bln 1–3</div>
+    </div>
+    <div class="tl-seg tl-active" style="position:relative;">
+      <div class="tl-seg-title">Bagi Hasil Aktif</div>
+      <div class="tl-seg-sub">Bln 4–22 → menuju payback</div>
+    </div>
+    <div class="tl-seg tl-payback" style="min-width:60px;">
+      <div class="tl-seg-title" style="font-size:0.65rem;">✓ BEP</div>
+      <div class="tl-seg-sub">~22</div>
+    </div>
+    <div class="tl-seg tl-profit">
+      <div class="tl-seg-title">💸 Pure Profit Zone</div>
+      <div class="tl-seg-sub">Bln 23–51</div>
+    </div>
+  </div>
+
+  <div class="reveal mt2">
+    <table class="milestone-table">
+      <thead>
+        <tr>
+          <th>Waktu</th>
+          <th>Event / Aksi</th>
+          <th>Posisi Investor</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="mono">Bulan 0</td>
+          <td>Investasi Rp 1.450.000.000 ditempatkan</td>
+          <td class="mono" style="color:#b91c1c">− Rp 1.450.000.000</td>
+          <td><span class="badge badge-red">Keluar</span></td>
+        </tr>
+        <tr>
+          <td class="mono">Bulan 1–3</td>
+          <td>Grace period — setup &amp; uji operasional dapur</td>
+          <td class="mono" style="color:var(--gray)">± Rp 0</td>
+          <td><span class="badge" style="background:#f1f5f9;color:var(--gray);border:1px solid var(--lightgray)">Menunggu</span></td>
+        </tr>
+        <tr>
+          <td class="mono">Bulan 4</td>
+          <td>Bagi hasil pertama Rp 75 juta diterima</td>
+          <td class="mono" style="color:var(--g-mid)">− Rp 1.375.000.000</td>
+          <td><span class="badge badge-green">Aktif</span></td>
+        </tr>
+        <tr>
+          <td class="mono">Bulan 12</td>
+          <td>Genap 1 tahun, total diterima Rp 675 Jt</td>
+          <td class="mono" style="color:var(--g-mid)">− Rp 775.000.000</td>
+          <td><span class="badge badge-green">Berjalan</span></td>
+        </tr>
+        <tr>
+          <td class="mono" style="font-weight:700">Bulan ~22</td>
+          <td><strong>Payback tercapai — modal kembali 100%</strong></td>
+          <td class="mono" style="color:var(--gold-dk); font-weight:700">≈ ± Rp 0 (BEP)</td>
+          <td><span class="badge badge-gold">PAYBACK ✓</span></td>
+        </tr>
+        <tr>
+          <td class="mono">Bulan 24</td>
+          <td>Genap 2 tahun, profit bersih ~Rp 225 Jt</td>
+          <td class="mono" style="color:var(--g-light)">+ Rp 225.000.000</td>
+          <td><span class="badge badge-green">Profit</span></td>
+        </tr>
+        <tr>
+          <td class="mono">Bulan 36</td>
+          <td>Genap 3 tahun, profit bersih ~Rp 1,275 M</td>
+          <td class="mono" style="color:var(--g-mid)">+ Rp 1.275.000.000</td>
+          <td><span class="badge badge-green">Profit</span></td>
+        </tr>
+        <tr>
+          <td class="mono" style="font-weight:700">Bulan 51</td>
+          <td><strong>Periode selesai — total 48x bagi hasil diterima</strong></td>
+          <td class="mono" style="color:var(--g-mid);font-weight:700">+ Rp 2.150.000.000</td>
+          <td><span class="badge badge-green">Selesai ✓</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- RISIKO -->
+<section id="risiko">
+  <div class="section-label">05 — Mitigasi Risiko</div>
+  <h2 class="section-title reveal">Proteksi &amp; Faktor<br>Pendukung</h2>
+  <p class="section-desc reveal">Setiap risiko diidentifikasi dan dimitigasi secara aktif untuk melindungi kepentingan investor.</p>
+
+  <div class="risk-grid">
+    <div class="risk-card reveal-left">
+      <div class="risk-icon" style="background:var(--g-ghost)">🏭</div>
+      <div class="risk-body">
+        <div class="risk-title">Risiko Operasional</div>
+        <div class="risk-desc">7 dapur sudah aktif beroperasi. Tim manajemen berpengalaman di food service & commissary kitchen dengan track record yang terbukti.</div>
+      </div>
+      <div class="risk-level" style="background:#dcfce7;color:#166534;border:1px solid #86efac">Rendah</div>
+    </div>
+    <div class="risk-card reveal-left" style="transition-delay:.1s">
+      <div class="risk-icon" style="background:#f0fdf4">🏛️</div>
+      <div class="risk-body">
+        <div class="risk-title">Risiko Pasar / Permintaan</div>
+        <div class="risk-desc">Program MBG adalah program pemerintah dengan komitmen jangka panjang dan kontrak volume tetap. Permintaan terjamin oleh kebijakan negara.</div>
+      </div>
+      <div class="risk-level" style="background:#d1fae5;color:#065f46;border:1px solid #6ee7b7">Sangat Rendah</div>
+    </div>
+    <div class="risk-card reveal-left" style="transition-delay:.15s">
+      <div class="risk-icon" style="background:var(--g-ghost)">💳</div>
+      <div class="risk-body">
+        <div class="risk-title">Risiko Likuiditas</div>
+        <div class="risk-desc">Bagi hasil dibayar bulanan via transfer rekening. Rekening terpisah untuk pengelolaan kas investor memastikan transparansi arus kas.</div>
+      </div>
+      <div class="risk-level" style="background:#dcfce7;color:#166534;border:1px solid #86efac">Rendah</div>
+    </div>
+    <div class="risk-card reveal-left" style="transition-delay:.2s">
+      <div class="risk-icon" style="background:#f0fdf4">📋</div>
+      <div class="risk-body">
+        <div class="risk-title">Risiko Regulasi</div>
+        <div class="risk-desc">MBG diatur oleh Badan Gizi Nasional RI. Kanisa memiliki seluruh perizinan operasional yang diperlukan dan mematuhi standar regulasi.</div>
+      </div>
+      <div class="risk-level" style="background:#dcfce7;color:#166534;border:1px solid #86efac">Rendah</div>
+    </div>
+    <div class="risk-card reveal-left" style="transition-delay:.25s">
+      <div class="risk-icon" style="background:var(--gold-lt)">🗺️</div>
+      <div class="risk-body">
+        <div class="risk-title">Risiko Konsentrasi Bisnis</div>
+        <div class="risk-desc">Dengan 7 dapur aktif dan rencana ekspansi hingga 50 dapur, diversifikasi pendapatan multi-lokasi meminimalkan risiko pada satu titik operasional.</div>
+      </div>
+      <div class="risk-level" style="background:var(--gold-lt);color:var(--gold-dk);border:1px solid #f9c550">Sedang</div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<div class="closing" id="closing">
+  <div class="closing-bg">
+    <div class="c1"></div>
+    <div class="c2"></div>
+  </div>
+  <h2 class="closing-title reveal">Saatnya Berinvestasi<br><em>dengan Dampak Nyata</em></h2>
+  <p class="closing-sub reveal">Bergabunglah dengan program Dapur MBG Kanisa — investasi yang menghasilkan return finansial terbaik sekaligus berkontribusi pada ketahanan gizi bangsa Indonesia.</p>
+  <div class="closing-stats reveal">
+    <div class="closing-stat">
+      <span class="closing-stat-val">58%</span>
+      <span class="closing-stat-lbl">Annual IRR</span>
+    </div>
+    <div class="closing-stat">
+      <span class="closing-stat-val">~22 bln</span>
+      <span class="closing-stat-lbl">Payback Period</span>
+    </div>
+    <div class="closing-stat">
+      <span class="closing-stat-val">Rp 2,15 M</span>
+      <span class="closing-stat-lbl">Net Profit Investor</span>
+    </div>
+    <div class="closing-stat">
+      <span class="closing-stat-val">NPV +</span>
+      <span class="closing-stat-lbl">Positif @ 12% Discount</span>
+    </div>
+  </div>
+  <div class="closing-footer">
+    Kanisa · Program Makan Bergizi Gratis · 2026<br>
+    Dokumen ini bersifat konfidensial dan hanya untuk calon investor yang dituju.
+  </div>
+</div>
+
+<script>
+// ── SCROLL REVEAL ──────────────────────────────────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      // If it's a struct-card or roi-card, trigger
+      if (e.target.classList.contains('struct-card') ||
+          e.target.classList.contains('roi-card') ||
+          e.target.classList.contains('sens-card')) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal, .reveal-left, .struct-card, .roi-card, .sens-card, .risk-card, .compare-row').forEach(el => {
+  observer.observe(el);
+});
+
+// struct-card & roi-card custom animation
+const cardObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const delay = parseFloat(e.target.style.transitionDelay || '0') * 1000;
+      setTimeout(() => {
+        e.target.style.opacity = '1';
+        e.target.style.transform = e.target.classList.contains('sens-card') && e.target.style.transform.includes('scale(1.03)')
+          ? 'scale(1.03) translateY(0)'
+          : 'translateY(0)';
+      }, delay);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.struct-card, .roi-card, .sens-card').forEach(el => cardObs.observe(el));
+
+// risk-card
+const riskObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const delay = parseFloat(e.target.style.transitionDelay || '0') * 1000;
+      setTimeout(() => {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateX(0)';
+      }, delay);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.risk-card').forEach(el => riskObs.observe(el));
+
+// ── COMPARE BARS ───────────────────────────────────────────────────────
+const barObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateX(0)';
+      const pct  = parseFloat(e.target.dataset.pct);
+      const max  = parseFloat(e.target.dataset.max);
+      const bar  = e.target.querySelector('.compare-bar');
+      setTimeout(() => {
+        bar.style.width = (pct / max * 100) + '%';
+      }, 200 + [...document.querySelectorAll('.compare-row')].indexOf(e.target) * 100);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.compare-row').forEach(el => barObs.observe(el));
+
+// ── CASH FLOW CHART (SVG) ──────────────────────────────────────────────
+function drawCashFlow() {
+  const svg = document.getElementById('cfSvg');
+  if (!svg) return;
+
+  const W = 1000, H = 300;
+  const padL = 70, padR = 30, padT = 30, padB = 50;
+  const chartW = W - padL - padR;
+  const chartH = H - padT - padB;
+
+  // Data: monthly cumulative from month 0 to 48
+  const data = [];
+  for (let m = 0; m <= 51; m++) {
+    const active = Math.max(0, m - 3);
+    data.push({ m, v: active * 75 - 1450 });
+  }
+
+  const minV = -1450, maxV = 2150;
+  const range = maxV - minV;
+
+  function cx(m) { return padL + (m / 51) * chartW; }
+  function cy(v) { return padT + chartH - ((v - minV) / range) * chartH; }
+
+  const zeroY = cy(0);
+
+  // Build path
+  let path = `M ${cx(0)} ${cy(-1450)}`;
+  for (let i = 1; i < data.length; i++) {
+    path += ` L ${cx(data[i].m)} ${cy(data[i].v)}`;
+  }
+  // Fill area above zero (profit zone)
+  let fillPath = '';
+  let started = false;
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].v > 0 && !started) {
+      // interpolate zero crossing
+      const prev = data[i-1], cur = data[i];
+      const t = -prev.v / (cur.v - prev.v);
+      const xCross = cx(prev.m + t * (cur.m - prev.m));
+      fillPath = `M ${xCross} ${zeroY} L ${cx(cur.m)} ${cy(cur.v)}`;
+      started = true;
+    } else if (data[i].v > 0) {
+      fillPath += ` L ${cx(data[i].m)} ${cy(data[i].v)}`;
+    }
+  }
+  if (started) fillPath += ` L ${cx(48)} ${zeroY} Z`;
+
+  svg.innerHTML = `
+    <defs>
+      <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#1b4a20"/>
+        <stop offset="45%" stop-color="#2e7d32"/>
+        <stop offset="100%" stop-color="#4caf50"/>
+      </linearGradient>
+    </defs>
+
+    <!-- Grid lines -->
+    ${[-1000,-500,0,500,1000,1500,2000].map(v => `
+      <line x1="${padL}" y1="${cy(v)}" x2="${W-padR}" y2="${cy(v)}"
+        stroke="${v === 0 ? '#f9a825' : '#e2e8f0'}"
+        stroke-width="${v === 0 ? 1.5 : 0.75}"
+        stroke-dasharray="${v === 0 ? '0' : '6,4'}"
+      />
+      <text x="${padL - 8}" y="${cy(v) + 4}" text-anchor="end" font-size="10" fill="#94a3b8" font-family="DM Mono, monospace">
+        ${v > 0 ? '+' : ''}${v}Jt
+      </text>
+    `).join('')}
+
+    <!-- X axis labels -->
+    ${[0,6,12,18,22,24,30,36,42,48,51].map(m => `
+      <text x="${cx(m)}" y="${H - 8}" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="DM Sans, sans-serif">
+        ${m}
+      </text>
+    `).join('')}
+    <text x="${W/2}" y="${H-2}" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="DM Sans, sans-serif">Bulan ke-</text>
+
+    <!-- Profit fill -->
+    <path d="${fillPath}" fill="#c8e6c9" fill-opacity="0.5"/>
+
+    <!-- Loss area fill -->
+    <!-- Main line -->
+    <path d="${path}" fill="none" stroke="url(#lineGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Payback annotation -->
+    <line x1="${cx(22.3)}" y1="${padT}" x2="${cx(22.3)}" y2="${H - padB}"
+      stroke="#f9a825" stroke-width="1.5" stroke-dasharray="5,4"/>
+    <rect x="${cx(22.3) - 38}" y="${padT + 4}" width="76" height="22" rx="4" fill="#f9a825"/>
+    <text x="${cx(22.3)}" y="${padT + 19}" text-anchor="middle" font-size="10" font-weight="700" fill="#0f2d13" font-family="DM Sans, sans-serif">
+      Payback ~Bln 22
+    </text>
+
+    <!-- Data point dots at key months -->
+    ${[0,12,22,36,48,51].map(m => {
+      const d = data[m];
+      return `<circle cx="${cx(m)}" cy="${cy(d.v)}" r="5" fill="${d.v >= 0 ? '#2e7d32' : '#ef4444'}" stroke="white" stroke-width="2"/>`;
+    }).join('')}
+  `;
+}
+
+drawCashFlow();
+window.addEventListener('resize', drawCashFlow);
+
+// ── COUNTER ANIMATION ─────────────────────────────────────────────────
+function animateCounters() {
+  document.querySelectorAll('.big-stat-num').forEach(el => {
+    const target = parseFloat(el.textContent);
+    if (isNaN(target)) return;
+    let current = 0;
+    const step = target / 60;
+    const timer = setInterval(() => {
+      current = Math.min(current + step, target);
+      el.textContent = Number.isInteger(target) ? Math.round(current) : current.toFixed(2);
+      if (current >= target) clearInterval(timer);
+    }, 20);
+  });
+}
+const statObs = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) {
+    animateCounters();
+    statObs.disconnect();
+  }
+}, { threshold: 0.3 });
+const statWrap = document.querySelector('.big-stat-wrap');
+if (statWrap) statObs.observe(statWrap);
+</script>
+</body>
+</html>

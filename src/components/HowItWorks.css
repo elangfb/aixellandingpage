@@ -1,0 +1,115 @@
+/* HOW IT WORKS */
+.how-layout {
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    gap: 80px;
+    align-items: start;
+}
+
+.how-visual {
+    background: var(--navy);
+    border-radius: var(--radius);
+    padding: 48px 44px;
+    position: relative;
+    overflow: hidden;
+}
+
+.how-visual-glow {
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 240px;
+    height: 240px;
+    background: radial-gradient(circle, rgba(184, 146, 42, 0.14), transparent 70%);
+    pointer-events: none;
+}
+
+.how-small-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(184, 146, 42, 0.7);
+    margin-bottom: 28px;
+    display: block;
+}
+
+.how-big-num {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 84px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.how-big-num span {
+    color: var(--gold);
+}
+
+.how-visual-desc {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.65;
+    max-width: 260px;
+}
+
+.how-steps {
+    display: flex;
+    flex-direction: column;
+    padding-top: 12px;
+}
+
+.how-step {
+    display: flex;
+    gap: 22px;
+    padding: 26px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+    transition: all 0.3s;
+}
+
+.how-step:last-child {
+    border-bottom: none;
+}
+
+.how-step:hover {
+    padding-left: 8px;
+}
+
+.step-circle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--gold-bg);
+    border: 1.5px solid var(--gold-line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Sans', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    flex-shrink: 0;
+}
+
+.step-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 4px;
+}
+
+.step-desc {
+    font-size: 14px;
+    color: var(--text-soft);
+    line-height: 1.65;
+}
+
+@media (max-width: 960px) {
+    .how-layout {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+}

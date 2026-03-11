@@ -1,0 +1,108 @@
+/* CTA */
+.cta-section {
+    padding: 100px 48px;
+    background: var(--navy);
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-center-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(184, 146, 42, 0.1), transparent 65%);
+    pointer-events: none;
+}
+
+.cta-inner {
+    max-width: 680px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+}
+
+.cta-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(184, 146, 42, 0.14);
+    border: 1px solid rgba(184, 146, 42, 0.24);
+    color: var(--gold-light);
+    padding: 5px 14px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+}
+
+.cta-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(36px, 5vw, 60px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: #fff;
+    margin-bottom: 18px;
+}
+
+.cta-title .accent {
+    color: var(--gold);
+}
+
+.cta-sub {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.52);
+    line-height: 1.7;
+    margin-bottom: 40px;
+}
+
+.cta-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-gold {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--gold);
+    color: var(--navy);
+    padding: 13px 26px;
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.25s;
+}
+
+.btn-gold:hover {
+    background: var(--gold-light);
+    transform: translateY(-1px);
+}
+
+.btn-outline-white {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.75);
+    padding: 13px 22px;
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1.5px solid rgba(255, 255, 255, 0.18);
+    transition: all 0.25s;
+}
+
+.btn-outline-white:hover {
+    border-color: rgba(255, 255, 255, 0.45);
+    color: #fff;
+}

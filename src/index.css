@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+
+:root {
+  --navy: #0A2540;
+  --navy-soft: #1a3a5c;
+  --gold: #B8922A;
+  --gold-light: #D4A843;
+  --gold-bg: #FBF5E8;
+  --gold-line: rgba(184,146,42,0.2);
+  --bg: #F6F5F1;
+  --bg-white: #FFFFFF;
+  --text: #0A2540;
+  --text-soft: #5A6E82;
+  --text-muted: #9AAABB;
+  --border: rgba(10,37,64,0.08);
+  --border-strong: rgba(10,37,64,0.15);
+  --shadow-sm: 0 1px 4px rgba(10,37,64,0.06);
+  --shadow: 0 4px 24px rgba(10,37,64,0.08);
+  --shadow-lg: 0 16px 48px rgba(10,37,64,0.12);
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { 
+  background: var(--bg); 
+  color: var(--text); 
+  font-family: 'DM Sans', sans-serif; 
+  font-weight: 400; 
+  overflow-x: hidden; 
+  line-height: 1.6; 
+}
+
+/* SECTION */
+.section { padding: 100px 48px; }
+.section-white { background: var(--bg-white); }
+.section-label { display: inline-flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+.section-label::before { content: ''; width: 18px; height: 2px; background: var(--gold); border-radius: 2px; }
+.section-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(32px, 4vw, 52px); font-weight: 700; line-height: 1.1; letter-spacing: -0.025em; color: var(--navy); max-width: 520px; }
+.section-title.accent, .accent { color: var(--gold); }
+.section-desc { margin-top: 14px; font-size: 16px; color: var(--text-soft); max-width: 460px; line-height: 1.7; }
+
+/* GLOBALS FOR APP */
+.reveal { opacity: 0; transform: translateY(22px); transition: all 0.7s cubic-bezier(0.25,0.46,0.45,0.94); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 2px; }
+
+@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+@media (max-width: 960px) {
+  .section { padding-left: 20px; padding-right: 20px; }
+}
