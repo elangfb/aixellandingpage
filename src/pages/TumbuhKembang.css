@@ -148,7 +148,10 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
-    box-shadow: 0 -4px 20px rgba(46, 124, 246, .07)
+    box-shadow: 0 -4px 20px rgba(46, 124, 246, .07);
+    margin-top: auto;
+    z-index: 10;
+    position: relative
 }
 
 .nb {
